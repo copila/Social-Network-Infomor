@@ -15,5 +15,4 @@ window.fbAsyncInit = function() {
    fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
-// var Twitter = require('twitter-node-client').Twitter;
 
