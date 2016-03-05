@@ -1,6 +1,6 @@
-var Twitter = require('twitter-node-client').Twitter;
+// var Twitter = require('twitter-node-client').Twitter;
 
-var ref = new Firebase("https://social-informor.firebaseio.com");
+var ref = new Firebase("https://social-informor.firebaseapp.com");
 
 $('#sign-in-with-twitter').on('click', 'input', function() { twitOath() });
 
