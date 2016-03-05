@@ -1,0 +1,9 @@
+{
+  "firebase": "social-informor",
+  "public": "Social-Network-Infomor",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}
