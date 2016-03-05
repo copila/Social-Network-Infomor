@@ -9,6 +9,17 @@
 
   </head>
   <body>
+    <script type="text/javascript">
+        window.fbAsyncInit = function() {
+          FB.init({
+            appId      : '1856892061204363',
+            xfbml      : true,
+            version    : 'v2.5'
+          });
+        };
+
+    </script>
+
     <div id="main_wrapper" class="container">
         <br>
         <table>
@@ -25,6 +36,21 @@
         <section id="my_marks">
             <p> We provide insights into your online social Presence</p>
             <p> test update</p>
+
+
+            <div
+              class="fb-like"
+              data-share="true"
+              data-width="450"
+              data-show-faces="true">
+            </div>
+
+            <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+            </fb:login-button>
+
+            <div id="status">
+            </div>
+
   
         <div id="exp_navigation">
             <input type="button" id="main_driver" class="button" value="Start">
