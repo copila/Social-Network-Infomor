@@ -1,0 +1,13 @@
+body {
+/*	background: black; */
+	color: white;
+	/*background: #DCDCDC;*/
+	background: #000000;
+	border: 0;
+	margin: 0;
+	text-align: left;
+	font-size: 18px;
+	font-family: 'Josefin Sans', sans-serif;
+	width: 80%;
+
+}
