@@ -8,6 +8,24 @@
 
   </head>
   <body>
+    <script type="text/javascript">
+        window.fbAsyncInit = function() {
+          FB.init({
+            appId      : '1856892061204363',
+            xfbml      : true,
+            version    : 'v2.5'
+          });
+        };
+
+        (function(d, s, id){
+           var js, fjs = d.getElementsByTagName(s)[0];
+           if (d.getElementById(id)) {return;}
+           js = d.createElement(s); js.id = id;
+           js.src = "https://connect.facebook.net/en_US/all.js";
+           fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+
     <div id="main_wrapper" class="container">
         <br>
         <table>
@@ -23,6 +41,13 @@
         </header>
         <section id="my_marks">
             <p> We provide insights into your online social Presence</p>
+
+            <div
+              class="fb-like"
+              data-share="true"
+              data-width="450"
+              data-show-faces="true">
+            </div>
   
         <div id="exp_navigation">
             <input type="button" id="main_driver" class="button" value="Start">
