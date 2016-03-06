@@ -4,7 +4,7 @@
     <link href="stylesheets/style.css" rel="stylesheet">
     <script src="scripts/jquery-2.2.0.min.js"> </script>
     <script src="scripts/scripts.js"> </script>  
-    <script src = "node_modules/twitter_node_client/lib/Twitter.js"> </script>
+    <script src = "scripts/echonest.js"> </script>
 
 
   </head>
@@ -52,7 +52,12 @@
 
   
         <div id="exp_navigation">
-            <input type="button" id="main_driver" class="button" value="Start">
+            <form>
+              Artist<br>
+              <input type="text" name="artistName" placeholder= "Enter Artist Name" id="artiste"><br>
+  
+            </form>
+            <input type="button" id="search" class="button" value="Search">
         </div>
         <!--
         <div id="exp_navigation2">
