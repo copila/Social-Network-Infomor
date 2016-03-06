@@ -8,7 +8,12 @@ $(document).ready(function() {
 
 
 	var APIKEY = "UVTZMTHARGEDWUD3W";
-	var url = "https://developer.echonest.com/api/v4/artist/search?api_key="
+	var url = "https://developer.echonest.com/api/v4/";
+	var artistSyntax = "artist/"
+	var news = "news?"
+	var APIpart = "api_key="+APIKEY;
+	var results= "4";
+	var start = "0"
 	var artist;
 
 	// document.getElementById("search").onclick = function() {buttonClick()};
@@ -20,10 +25,11 @@ $(document).ready(function() {
 		console.log("search button clicked");
 		artist = document.getElementById('artiste').value;
 		console.log("artist serached is: " + artist);
-		url2 = url+APIKEY+"&name="+artist;
+		url2 = url+artistSyntax+news+APIpart+"&name="+artist+"&results="+results+"&start="+start;
 		console.log("url is: " + url2);
 		getURL(url2);
 		window.alert("you selected: " + artist +"!");
+		document.getElementById('artiste').value = "";
 
 	}
 
@@ -31,7 +37,18 @@ $(document).ready(function() {
 
 		$.get(url2, function(data, status){
         console.log("Data: " + JSON.stringify(data) + "\nStatus: " + status);
+        formatResults(data);
     	});
+	}
+
+	function formatResults(data){
+		for (var i = 0; i < data.response.news.length; i++) {
+			var name = data.response.news[i].name;
+			console.log("article name is: " + name);
+			$( "#results" ).append( "<li>"+name+"</li>" );
+   		console.log(i);
+   // more statements
+		}
 	}
 
 });
