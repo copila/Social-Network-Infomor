@@ -22,15 +22,15 @@ $(document).ready(function() {
 		console.log("artist serached is: " + artist);
 		url2 = url+APIKEY+"&name="+artist;
 		console.log("url is: " + url2);
-		// getURL(url2);
-		getURL3();
+		getURL(url2);
+		window.alert("you selected: " + artist +"!");
 
 	}
 
 	function getURL(url2){
 
 		$.get(url2, function(data, status){
-        console.log("Data: " + data + "\nStatus: " + status);
+        console.log("Data: " + JSON.stringify(data) + "\nStatus: " + status);
     	});
 	}
 
