@@ -1,4 +1,4 @@
-// var Twitter = require('twitter-node-client').Twitter;
+
 
 var ref = new Firebase("https://social-informor.firebaseio.com");
 
@@ -15,11 +15,3 @@ function twitOath(){
 }
        
 
-
-
-
- // $(function() {
- //                $(&quot;#sign-in-with-twitter&quot;).on(&quot;click&quot;, function() {
- //                    window.location.href = &quot;<some domain>/request-token&quot;;
- //                });
- //            });
