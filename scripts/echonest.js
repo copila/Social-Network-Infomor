@@ -4,34 +4,40 @@
 
 // Your Shared Secret: xpHsJX7ZSyKkng10pCkDWQ
 
-
-var APIKEY = "UVTZMTHARGEDWUD3W";
-var url = "http://developer.echonest.com/api/v4/artist/search?api_key="
-var artist;
-
-$('#search').on('click', buttonClick);
+$(document).ready(function() {
 
 
-function buttonClick() {
-	console.log("search button clicked");
-	artist = document.getElementById('artiste').value;
-	console.log("artist serached is: " + artist);
-	url2 = url+APIKEY+"&name="+artist;
-	console.log("url is: " + url2);
-	getURL(url2);
+	var APIKEY = "UVTZMTHARGEDWUD3W";
+	var url = "http://developer.echonest.com/api/v4/artist/search?api_key="
+	var artist;
 
-}
+	// document.getElementById("search").onclick = function() {buttonClick()};
 
-function getURL(url2){
-	$.ajax(url2, {
-		dataType: "jsonp",
-		success: function (results) {
+	$('#search').on('click', buttonClick);
 
-			console.log("the results are: " +results);
 
-		}
-	});
-}
+	function buttonClick() {
+		console.log("search button clicked");
+		artist = document.getElementById('artiste').value;
+		console.log("artist serached is: " + artist);
+		url2 = url+APIKEY+"&name="+artist;
+		console.log("url is: " + url2);
+		getURL(url2);
+
+	}
+
+	function getURL(url2){
+		$.ajax(url2, {
+			dataType: "jsonp",
+			success: function (results) {
+
+				console.log("the results are: " +results);
+
+			}
+		});
+	}
+
+});
 
 
 
