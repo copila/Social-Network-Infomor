@@ -8,7 +8,7 @@ $(document).ready(function() {
 
 
 	var APIKEY = "UVTZMTHARGEDWUD3W";
-	var url = "http://developer.echonest.com/api/v4/artist/search?api_key="
+	var url = "https://developer.echonest.com/api/v4/artist/search?api_key="
 	var artist;
 
 	// document.getElementById("search").onclick = function() {buttonClick()};
@@ -22,19 +22,16 @@ $(document).ready(function() {
 		console.log("artist serached is: " + artist);
 		url2 = url+APIKEY+"&name="+artist;
 		console.log("url is: " + url2);
-		getURL(url2);
+		// getURL(url2);
+		getURL3();
 
 	}
 
 	function getURL(url2){
-		$.ajax(url2, {
-			dataType: "jsonp",
-			success: function (results) {
 
-				console.log("the results are: " +results);
-
-			}
-		});
+		$.get(url2, function(data, status){
+        console.log("Data: " + data + "\nStatus: " + status);
+    	});
 	}
 
 });
