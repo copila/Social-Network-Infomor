@@ -18,7 +18,12 @@ function statusChangeCallback(response) {
   // for FB.getLoginStatus().
   if (response.status === 'connected') {
     // Logged into your app and Facebook.
+    var userToken = response.authResponse.accessToken;
+    var userId = response.authResponse.userID;
+    console.log("userID is: " + userId);
+    console.log("userToken is: " + userToken);
     testAPI();
+    returnMusic();
   } else if (response.status === 'not_authorized') {
     // The person is logged into Facebook, but not your app.
     document.getElementById('status').innerHTML = 'Please log ' +
@@ -63,19 +68,19 @@ FB.init({
 
 FB.getLoginStatus(function(response) {
   statusChangeCallback(response);
-  window.top.location = "welcome.html"
+  // window.top.location = "welcome.html"
 });
 
 };
 
-// Load the SDK asynchronously
-(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));
+// // Load the SDK asynchronously
+// (function(d, s, id) {
+//   var js, fjs = d.getElementsByTagName(s)[0];
+//   if (d.getElementById(id)) return;
+//   js = d.createElement(s); js.id = id;
+//   js.src = "//connect.facebook.net/en_US/sdk.js";
+//   fjs.parentNode.insertBefore(js, fjs);
+// }(document, 'script', 'facebook-jssdk'));
 
 // Here we run a very simple test of the Graph API after login is
 // successful.  See statusChangeCallback() for when this call is made.
@@ -85,5 +90,12 @@ function testAPI() {
     console.log('Successful login for: ' + response.name);
     document.getElementById('status').innerHTML =
       'Thanks for logging in, ' + response.name + '!';
+  });
+}
+
+function returnMusic(){
+  console.log("FindStuff Button Pressed");
+  FB.api('/me?fields=id,name,music', function(response) {
+    console.log('ID, NAME, MUSIC: ' + JSON.stringify(response));
   });
 }
