@@ -1,3 +1,7 @@
+var userToken; 
+Firebase.enableLogging(true);
+var myFirebaseRef = new Firebase("https://social-informor.firebaseio.com/");
+
 (function(d, s, id){
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) {return;}
@@ -17,13 +21,18 @@ function statusChangeCallback(response) {
   // Full docs on the response object can be found in the documentation
   // for FB.getLoginStatus().
   if (response.status === 'connected') {
+
     // Logged into your app and Facebook.
-    var userToken = response.authResponse.accessToken;
+    userToken = response.authResponse.accessToken;
     var userId = response.authResponse.userID;
-    console.log("userID is: " + userId);
+    console.log("userId is: " + userId);
     console.log("userToken is: " + userToken);
+    myFirebaseRef.set({
+      userToken: userToken,
+      userId: userId,
+    });
     testAPI();
-    returnMusic();
+    returnMusic(userToken);
   } else if (response.status === 'not_authorized') {
     // The person is logged into Facebook, but not your app.
     document.getElementById('status').innerHTML = 'Please log ' +
@@ -90,12 +99,22 @@ function testAPI() {
     console.log('Successful login for: ' + response.name);
     document.getElementById('status').innerHTML =
       'Thanks for logging in, ' + response.name + '!';
-  });
+       });
 }
 
-function returnMusic(){
-  console.log("FindStuff Button Pressed");
-  FB.api('/me?fields=id,name,music', function(response) {
-    console.log('ID, NAME, MUSIC: ' + JSON.stringify(response));
-  });
+function returnMusic(userToken){
+  console.log("returnMusic called");
+  console.log("userToken is: " + userToken);
+  FB.api('me?fields=name,friends{name,music}', 'get', function(response) {
+    console.log(' NAME, MUSIC: ' + JSON.stringify(response));
+    var name = response.name;
+    var friends = response.friends;
+    myFirebaseRef.update({
+      Name: name,
+      Friends: friends
+    });
+
+    console.log("name in music function is: " + name);
+    console.log('friends in music function is:  ' + JSON.stringify(friends));
+});
 }
