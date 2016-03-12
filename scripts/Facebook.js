@@ -12,6 +12,8 @@ var artist;
 Firebase.enableLogging(true);
 var myFirebaseRef = new Firebase("https://social-informor.firebaseio.com/");
 var artistHotness = [];
+var name;
+var hotnessArray1 = [];
 
 
 (function(d, s, id){
@@ -37,12 +39,8 @@ function statusChangeCallback(response) {
     // Logged into your app and Facebook.
     userToken = response.authResponse.accessToken;
     var userId = response.authResponse.userID;
-    console.log("userId is: " + userId);
-    console.log("userToken is: " + userToken);
-    myFirebaseRef.set({
-      userToken: userToken,
-      userId: userId,
-    });
+    // console.log("userId is: " + userId);
+    // console.log("userToken is: " + userToken);
     testAPI();
     returnMusic(userToken, userId);
     returnFriend(userToken, userId);
@@ -113,24 +111,31 @@ function testAPI() {
     console.log('Successful login for: ' + response.name);
     document.getElementById('status').innerHTML =
       'Thanks for logging in, ' + response.name + '!';
-       });
+    name1 = response.name;
+    name  = name1.split(' ').join('_');
+    myFirebaseRef.set({
+      name
+    });
+
+  });
+  
 }
 
 function returnFriend(userToken, userId){
+  var userFBRef = new Firebase("https://social-informor.firebaseio.com/"+name);
   console.log("returnFriendcalled");
   console.log("userToken is: " + userToken);
   console.log("userId is: " + userId);
   FB.api(userId+'?fields=name,friends.limit(5)', 'get', function(response) {
     console.log(' friends returned: ' + JSON.stringify(response));
-    var name = response.name;
+    // var name = response.name;
     var friends = response.friends;
     var data = response.friends.data;
-    console.log("name in friend function is: " + name);
+    // console.log("name in friend function is: " + name);
     // console.log('friends in friend function is:  ' + JSON.stringify(friends));
     console.log('data in friend function is:  ' + JSON.stringify(data));
     returnFriendMusic(data);
-    myFirebaseRef.update({
-      Name: name,
+    userFBRef.update({
       Friends: data
     });
     var next = response.friends.paging.next;
@@ -142,7 +147,8 @@ function returnFriend(userToken, userId){
 }
 
 function returnMusic(userToken, userId){
-  var musicFBRef = new Firebase("https://social-informor.firebaseio.com/Music")
+  // var musicFBRef = new Firebase("https://social-informor.firebaseio.com/Music")
+  var userFBRef = new Firebase("https://social-informor.firebaseio.com/"+name);
   console.log("returnMusic called");
   // console.log("userToken is: " + userToken);
   // console.log("userId is: " + userId);
@@ -152,17 +158,17 @@ function returnMusic(userToken, userId){
     console.log('music in music function is:  ' + JSON.stringify(music));
     // console.log('data in music function is:  ' + JSON.stringify(response));
     var musicArr = response.music.data;
-     myFirebaseRef.update({
+     userFBRef.update({
       Music: music
     });
-    for (i = 0; i < musicArr.length; i++) { 
-      artist = musicArr[i].name;
-      artistID = musicArr[i].id;
-      musicFBRef.push({
-        Artist: artist,
-        artistID : artistID
-      });
-    }
+    // for (i = 0; i < musicArr.length; i++) { 
+    //   artist = musicArr[i].name;
+    //   artistID = musicArr[i].id;
+    //   musicFBRef.push({
+    //     Artist: artist,
+    //     artistID : artistID
+    //   });
+    // }
    
     // var next = response.friends.paging.next;
     // console.log("paging.next is: " + next);
@@ -175,6 +181,7 @@ function returnMusic(userToken, userId){
 
 function returnFriendMusic(friends){
   console.log("friends object in returnFriendMusic is: " + friends);
+  var userFBRef = new Firebase("https://social-informor.firebaseio.com/"+name);
   for (i = 0; i < friends.length; i++) { 
       friendId = friends[i].id;
       friendName = friends[i].name;
@@ -182,13 +189,18 @@ function returnFriendMusic(friends){
       FB.api(friendId+'?fields=music', 'get', function(response) {
         console.log('music for ' + friendName + "is: " + JSON.stringify(response));
         friendMusic = response.music.data;
-        getHotness(friendMusic);
+        getHotness(friendMusic, friendName);
+        // userFBRef.update({
+        //   friendName
+        // });
+
 
       });
   }
 }
 
-function getHotness(friendsArtist){
+function getHotness(friendsArtist, friendName){
+  var userFBRef = new Firebase("https://social-informor.firebaseio.com/"+name);
   for (i = 0; i < friendsArtist.length; i++) { 
     var artist = friendsArtist[i].name;
     if (hasWhiteSpace(artist) === true ){
@@ -202,17 +214,54 @@ function getHotness(friendsArtist){
     url2 = url+artistSyntax+hotness+APIpart+"&name="+artist2+"&format=json";
     console.log("url is: " + url2);
     $.get(url2, function(data, status){
-      console.log("Data: " + JSON.stringify(data) + "\nStatus: " + status);
-      artistHotness.push(data);
+      console.log("data: " + JSON.stringify(data) + "\nStatus: " + status);
+      hotnessArray1.push(data);
+      if (data.response.artist != undefined) {
+        var artistsInfo = data.response.artist;
+         console.log("artistInfo is: " + JSON.stringify(artistsInfo));
+        artistHotness.push(artistsInfo);
+
+      }
+      else {
+        console.log("NOOO response for this artist: ");
+      }
+      
     });
     console.log("artistHotness array is: " + artistHotness);
+    userFBRef.update({
+        hotnessArray1
+    }); 
   }
+  artistHotness.sort(function(b,a) {
+    return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
+    })
   // http://developer.echonest.com/api/v4/artist/hotttnesss?api_key=FILDTEOIK2HBORODV&id=ARH6W4X1187B99274F&format=json
+  displayHotness(artistHotness);
 }
 
 function hasWhiteSpace(s) {
   return s.indexOf(' ') >= 0;
 }
+
+function sortHotness(hotnessArray){
+  hotnessArray.sort(function(a, b) {
+    return parseFloat(b.hotttnesss) - parseFloat(a.hotttnesss);
+  })
+}
+
+function displayHotness(array){
+  console.log("display hotness function called");
+  for (i = 0; i < 10 ; i++) { 
+      var name = array[i].name;
+      var hotness_score = array[i].hotttnesss;
+      console.log("artist name is: " + name + " hotness score is: " + hotness_score);
+      $( "#hot_artists" ).append( "<li>" + name + ": " + "score: " +hotness_score + "</li>" );
+  }
+}
+
+
+
+
 
 
 
@@ -240,8 +289,6 @@ function hasWhiteSpace(s) {
 //     }
 //   }
 // }
-
-
 
 
 
