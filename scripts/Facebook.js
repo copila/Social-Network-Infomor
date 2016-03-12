@@ -14,6 +14,7 @@ var myFirebaseRef = new Firebase("https://social-informor.firebaseio.com/");
 var artistHotness = [];
 var name;
 var hotnessArray1 = [];
+var friendMusicArray = [];
 
 
 (function(d, s, id){
@@ -116,7 +117,7 @@ function testAPI() {
     name1 = response.name;
     //remove spaces in the name
     name  = name1.split(' ').join('_');
-    myFirebaseRef.set({
+    myFirebaseRef.update({
       name
     });
 
@@ -199,56 +200,62 @@ function returnFriendMusic(friends){
       friendId = friends[i].id;
       friendName = friends[i].name;
       console.log("friendId is: " + friendId);
+      console.log("friendName is:" + friendName);
       // queries FB graphy API using the friend ID to get his or her music likes
       FB.api(friendId+'?fields=music', 'get', function(response) {
         console.log('music for ' + friendName + "is: " + JSON.stringify(response));
-        friendMusic = response.music.data;
-        getHotness(friendMusic, friendName);
-        // userFBRef.update({
-        //   friendName
-        // });
-
-
+       var friendMusic = response.music.data;
+       friendMusicArray.push(friendMusic);
+        userFBRef.update({
+          friendName
+        });
+        userFBRef.child(friendName).update({
+            friendMusic
+        });
       });
+    
   }
+  getHotness(friendMusicArray);
 }
 
-function getHotness(friendsArtist, friendName){
+function getHotness(friendMusicArray){
   var userFBRef = new Firebase("https://social-informor.firebaseio.com/"+name);
-  for (i = 0; i < friendsArtist.length; i++) { 
-    var artist = friendsArtist[i].name;
-    if (hasWhiteSpace(artist) === true ){
-      console.log("artist has whitespace " + artist);
-      artist2 = artist.split(' ').join('+');
-    }
-    else{
-      artist2 = artist;
-    }
-    console.log("artist name in getHotness is: " + artist2);
-    url2 = url+artistSyntax+hotness+APIpart+"&name="+artist2+"&format=json";
-    console.log("url is: " + url2);
-    $.get(url2, function(data, status){
-      console.log("data: " + JSON.stringify(data) + "\nStatus: " + status);
-      hotnessArray1.push(data);
-      if (data.response.artist != undefined) {
-        var artistsInfo = data.response.artist;
-         console.log("artistInfo is: " + JSON.stringify(artistsInfo));
-        artistHotness.push(artistsInfo);
-
+  for (i = 0; i < friendMusicArray.length; i++) {
+      friendArtist =friendMusicArray[i];
+      for (i = 0; i < friendsArtist.length; i++) { 
+        var artist = friendsArtist[i].name;
+        if (hasWhiteSpace(artist) === true ){
+          console.log("artist has whitespace " + artist);
+          artist2 = artist.split(' ').join('+');
+        }
+        else{
+          artist2 = artist;
+        }
+        console.log("artist name in getHotness is: " + artist2);
+        url2 = url+artistSyntax+hotness+APIpart+"&name="+artist2+"&format=json";
+        console.log("url is: " + url2);
+        $.get(url2, function(data, status){
+          console.log("data: " + JSON.stringify(data) + "\nStatus: " + status);
+          hotnessArray1.push(data);
+          if (data.response.artist != undefined) {
+            var artistsInfo = data.response.artist;
+             console.log("artistInfo is: " + JSON.stringify(artistsInfo));
+            artistHotness.push(artistsInfo);
+          }
+          else {
+            console.log("NOOO response for this artist: ");
+          }
+          
+        });
+        console.log("artistHotness array is: " + artistHotness);
+        userFBRef.update({
+            hotnessArray1
+        }); 
       }
-      else {
-        console.log("NOOO response for this artist: ");
-      }
-      
-    });
-    console.log("artistHotness array is: " + artistHotness);
-    userFBRef.update({
-        hotnessArray1
-    }); 
-  }
+  }   
   artistHotness.sort(function(b,a) {
     return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
-    })
+  });
   // http://developer.echonest.com/api/v4/artist/hotttnesss?api_key=FILDTEOIK2HBORODV&id=ARH6W4X1187B99274F&format=json
   displayHotness(artistHotness);
   //get top 10 songs from artistHotness array
@@ -264,7 +271,7 @@ function hasWhiteSpace(s) {
 function sortHotness(hotnessArray){
   hotnessArray.sort(function(a, b) {
     return parseFloat(b.hotttnesss) - parseFloat(a.hotttnesss);
-  })
+  });
 }
 
 function displayHotness(array){
@@ -277,9 +284,6 @@ function displayHotness(array){
   }
 }
 
-function displayNews{
-
-}
 
 function getArtistSongs(array){
   //return top 10 songs, 1 ofr each artist in array
