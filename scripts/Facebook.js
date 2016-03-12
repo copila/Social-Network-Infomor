@@ -109,13 +109,14 @@ function returnFriend(userToken, userId){
   console.log("userToken is: " + userToken);
   console.log("userId is: " + userId);
   FB.api(userId+'?fields=name,friends.limit(5)', 'get', function(response) {
-    console.log(' NAME, MUSIC: ' + JSON.stringify(response));
+    console.log(' friends returned: ' + JSON.stringify(response));
     var name = response.name;
     var friends = response.friends;
     var data = response.friends.data;
-    console.log("name in music function is: " + name);
-    console.log('friends in music function is:  ' + JSON.stringify(friends));
-    console.log('data in music function is:  ' + JSON.stringify(data));
+    console.log("name in friend function is: " + name);
+    // console.log('friends in friend function is:  ' + JSON.stringify(friends));
+    console.log('data in friend function is:  ' + JSON.stringify(data));
+    returnFriendMusic(data);
     myFirebaseRef.update({
       Name: name,
       Friends: data
@@ -129,17 +130,28 @@ function returnFriend(userToken, userId){
 }
 
 function returnMusic(userToken, userId){
+  var musicFBRef = new Firebase("https://social-informor.firebaseio.com/Music")
   console.log("returnMusic called");
-  console.log("userToken is: " + userToken);
-  console.log("userId is: " + userId);
+  // console.log("userToken is: " + userToken);
+  // console.log("userId is: " + userId);
   FB.api(userId+'?fields=music', 'get', function(response) {
-    console.log(' NAME, MUSIC: ' + JSON.stringify(response));
+    console.log('Music ' + JSON.stringify(response));
     var music = response.music;
     console.log('music in music function is:  ' + JSON.stringify(music));
-    console.log('data in music function is:  ' + JSON.stringify(data));
-    myFirebaseRef.update({
+    // console.log('data in music function is:  ' + JSON.stringify(response));
+    var musicArr = response.music.data;
+     myFirebaseRef.update({
       Music: music
     });
+    for (i = 0; i < musicArr.length; i++) { 
+      artist = musicArr[i].name;
+      artistID = musicArr[i].id;
+      musicFBRef.push({
+        Artist: artist,
+        artistID : artistID
+      });
+    }
+   
     // var next = response.friends.paging.next;
     // console.log("paging.next is: " + next);
     // if (next != undefined){
@@ -148,6 +160,19 @@ function returnMusic(userToken, userId){
   });
 }
 
+
+function returnFriendMusic(friends){
+  console.log("friends object in returnFriendMusic is: " + friends);
+  for (i = 0; i < friends.length; i++) { 
+      friendId = friends[i].id;
+      friendName = friends[i].name;
+      console.log("friendId is: " + friendId);
+      FB.api(friendId+'?fields=music', 'get', function(response) {
+        console.log('music for ' + friendName + "is: " + JSON.stringify(response));
+        var music = response.music;
+      });
+  }
+}
 
 function saveMusicDataToFB(nextPage){
   var friendsFBRef = new Firebase("https://social-informor.firebaseio.com/Friends");
@@ -169,3 +194,8 @@ function saveMusicDataToFB(nextPage){
     }
   }
 }
+
+
+
+
+
