@@ -3,6 +3,10 @@
     function login(callback) {
         var CLIENT_ID = 'acf47954bc5a4858af317e043cf8ab07';
         var REDIRECT_URI = 'https://social-informor.firebaseapp.com';
+        var CLIENT_SECRET = 'e191775a80ee4d42939dcaa38455de0b';
+
+        var scopes = 'user-read-email';
+
         function getLoginURL(scopes) {
             return 'https://accounts.spotify.com/authorize?client_id=' + CLIENT_ID +
               '&redirect_uri=' + encodeURIComponent(REDIRECT_URI) +
