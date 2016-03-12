@@ -2,6 +2,7 @@ var userToken;
 var friendMusic;
 var APIKEY = "UVTZMTHARGEDWUD3W";
 var url = "https://developer.echonest.com/api/v4/";
+var urlSpotify = "https://api.spotify.com";
 var artistSyntax = "artist/"
 var news = "news?"
 var hotness = "hotttnesss?"
@@ -277,21 +278,41 @@ function displayHotness(array){
   }
 }
 
-function displayNews{
+// function displayNews{
 
-}
+// }
 
-function getArtistSongs(array){
-  //return top 10 songs, 1 ofr each artist in array
-  //query using artist id
-  for (i = 0; i < 10 ; i++) { 
-      var name = array[i].name;
-      var hotness_score = array[i].hotttnesss;
-      var artist_id = array[i].id;
-  //     console.log("artist name is: " + name + " hotness score is: " + hotness_score);
-  //     $( "#hot_artists" ).append( "<li>" + name + ": " + "score: " +hotness_score + "</li>" );
-  }
-}
+// function getArtistSongs(array){
+//   //return top 10 songs, 1 ofr each artist in array
+//   //query using artist id
+//   var songs = [];
+//   for (i = 0; i < 10 ; i++) { 
+//       var name = array[i].name;
+//       var hotness_score = array[i].hotttnesss;
+//       var artist_id = array[i].id;
+
+//       var artist_top_songs = [];
+
+//       url2 = urlSpotify + "/v1/artists/" + artist_id + "/top-tracks" + "?country=US";
+//       console.log("url is: " + url2);
+//       $.get(url2, function(data, status){
+//         console.log("data: " + JSON.stringify(data) + "\nStatus: " + status);
+//         artist_top_songs.push(data);
+//         if (data.response.artist != undefined) {
+//           var artistsInfo = data.response.artist;
+//            console.log("Top Songs for " + name + " are: " + JSON.stringify(artistsInfo));
+//           artistHotness.push(artistsInfo);
+
+//         }
+//         else {
+//           console.log("NOOO response for this artist: ");
+//         }
+        
+//       });
+//   //     console.log("artist name is: " + name + " hotness score is: " + hotness_score);
+//   //     $( "#hot_artists" ).append( "<li>" + name + ": " + "score: " +hotness_score + "</li>" );
+//   }
+// }
 
 function getTwitterHandles(array){
   //return twitter handles of top 10 hottest artists
