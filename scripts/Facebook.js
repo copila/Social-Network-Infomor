@@ -1,6 +1,18 @@
 var userToken; 
+var friendMusic;
+var APIKEY = "UVTZMTHARGEDWUD3W";
+var url = "https://developer.echonest.com/api/v4/";
+var artistSyntax = "artist/"
+var news = "news?"
+var hotness = "hotttnesss?"
+var APIpart = "api_key="+APIKEY;
+var results= "1";
+var start = "0"
+var artist;
 Firebase.enableLogging(true);
 var myFirebaseRef = new Firebase("https://social-informor.firebaseio.com/");
+var artistHotness = [];
+
 
 (function(d, s, id){
   var js, fjs = d.getElementsByTagName(s)[0];
@@ -169,31 +181,65 @@ function returnFriendMusic(friends){
       console.log("friendId is: " + friendId);
       FB.api(friendId+'?fields=music', 'get', function(response) {
         console.log('music for ' + friendName + "is: " + JSON.stringify(response));
-        var music = response.music;
+        friendMusic = response.music.data;
+        getHotness(friendMusic);
+
       });
   }
 }
 
-function saveMusicDataToFB(nextPage){
-  var friendsFBRef = new Firebase("https://social-informor.firebaseio.com/Friends");
-  if (nextPage != undefined){
-    FB.api(nextPage, 'get', function(response) {
-      console.log("next page response: " + JSON.stringify(response));
-      var next = response.paging.next;
-      var previous = response.paging.previous;
-      console.log("paging next is: " + next);
-      console.log("paging previous is: " + next);
-      var friendData = response.data;
-      console.log ("friendData is: " + friendData);
-    });
-    friendsFBRef.update({
-      friendData
-    });
-    if (next != undefined){
-      saveMusicDataToFB(next);
+function getHotness(friendsArtist){
+  for (i = 0; i < friendsArtist.length; i++) { 
+    var artist = friendsArtist[i].name;
+    if (hasWhiteSpace(artist) === true ){
+      console.log("artist has whitespace " + artist);
+      artist2 = artist.split(' ').join('+');
     }
+    else{
+      artist2 = artist;
+    }
+    console.log("artist name in getHotness is: " + artist2);
+    url2 = url+artistSyntax+hotness+APIpart+"&name="+artist2+"&format=json";
+    console.log("url is: " + url2);
+    $.get(url2, function(data, status){
+      console.log("Data: " + JSON.stringify(data) + "\nStatus: " + status);
+      artistHotness.push(data);
+    });
+    console.log("artistHotness array is: " + artistHotness);
   }
+  // http://developer.echonest.com/api/v4/artist/hotttnesss?api_key=FILDTEOIK2HBORODV&id=ARH6W4X1187B99274F&format=json
 }
+
+function hasWhiteSpace(s) {
+  return s.indexOf(' ') >= 0;
+}
+
+
+
+
+
+
+
+// function saveMusicDataToFB(nextPage){
+//   var friendsFBRef = new Firebase("https://social-informor.firebaseio.com/Friends");
+//   if (nextPage != undefined){
+//     FB.api(nextPage, 'get', function(response) {
+//       console.log("next page response: " + JSON.stringify(response));
+//       var next = response.paging.next;
+//       var previous = response.paging.previous;
+//       console.log("paging next is: " + next);
+//       console.log("paging previous is: " + next);
+//       var friendData = response.data;
+//       console.log ("friendData is: " + friendData);
+//     });
+//     friendsFBRef.update({
+//       friendData
+//     });
+//     if (next != undefined){
+//       saveMusicDataToFB(next);
+//     }
+//   }
+// }
 
 
 
