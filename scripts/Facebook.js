@@ -32,7 +32,9 @@ function statusChangeCallback(response) {
       userId: userId,
     });
     testAPI();
-    returnMusic(userToken);
+    returnMusic(userToken, userId);
+    returnFriend(userToken, userId);
+
   } else if (response.status === 'not_authorized') {
     // The person is logged into Facebook, but not your app.
     document.getElementById('status').innerHTML = 'Please log ' +
@@ -102,19 +104,68 @@ function testAPI() {
        });
 }
 
-function returnMusic(userToken){
-  console.log("returnMusic called");
+function returnFriend(userToken, userId){
+  console.log("returnFriendcalled");
   console.log("userToken is: " + userToken);
-  FB.api('me?fields=name,friends{name,music}', 'get', function(response) {
+  console.log("userId is: " + userId);
+  FB.api(userId+'?fields=name,friends.limit(5)', 'get', function(response) {
     console.log(' NAME, MUSIC: ' + JSON.stringify(response));
     var name = response.name;
     var friends = response.friends;
-    myFirebaseRef.update({
-      Name: name,
-      Friends: friends
-    });
-
+    var data = response.friends.data;
     console.log("name in music function is: " + name);
     console.log('friends in music function is:  ' + JSON.stringify(friends));
-});
+    console.log('data in music function is:  ' + JSON.stringify(data));
+    myFirebaseRef.update({
+      Name: name,
+      Friends: data
+    });
+    var next = response.friends.paging.next;
+    console.log("paging.next is: " + next);
+  //   if (next != undefined){
+  //     saveMusicDataToFB(next);
+  //   }
+  });
+}
+
+function returnMusic(userToken, userId){
+  console.log("returnMusic called");
+  console.log("userToken is: " + userToken);
+  console.log("userId is: " + userId);
+  FB.api(userId+'?fields=music', 'get', function(response) {
+    console.log(' NAME, MUSIC: ' + JSON.stringify(response));
+    var music = response.music;
+    console.log('music in music function is:  ' + JSON.stringify(music));
+    console.log('data in music function is:  ' + JSON.stringify(data));
+    myFirebaseRef.update({
+      Music: music
+    });
+    // var next = response.friends.paging.next;
+    // console.log("paging.next is: " + next);
+    // if (next != undefined){
+    //   saveMusicDataToFB(next);
+    // }
+  });
+}
+
+
+function saveMusicDataToFB(nextPage){
+  var friendsFBRef = new Firebase("https://social-informor.firebaseio.com/Friends");
+  if (nextPage != undefined){
+    FB.api(nextPage, 'get', function(response) {
+      console.log("next page response: " + JSON.stringify(response));
+      var next = response.paging.next;
+      var previous = response.paging.previous;
+      console.log("paging next is: " + next);
+      console.log("paging previous is: " + next);
+      var friendData = response.data;
+      console.log ("friendData is: " + friendData);
+    });
+    friendsFBRef.update({
+      friendData
+    });
+    if (next != undefined){
+      saveMusicDataToFB(next);
+    }
+  }
 }
