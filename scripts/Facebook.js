@@ -230,13 +230,11 @@ function getHotness(friendsArtist, friendName){
     console.log("artistHotness array is: " + artistHotness);
     userFBRef.update({
         hotnessArray1
-    });
-    // artistHotness.sort(function(a, b) {
-    // return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
-    // })
-    // hotnessArray2 = sortHotness(artistHotness);
-    console.log("sorted hotness array: " + artistHotness);
+    }); 
   }
+  artistHotness.sort(function(b,a) {
+    return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
+    })
   // http://developer.echonest.com/api/v4/artist/hotttnesss?api_key=FILDTEOIK2HBORODV&id=ARH6W4X1187B99274F&format=json
   displayHotness(artistHotness);
 }
@@ -247,7 +245,7 @@ function hasWhiteSpace(s) {
 
 function sortHotness(hotnessArray){
   hotnessArray.sort(function(a, b) {
-    return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
+    return parseFloat(b.hotttnesss) - parseFloat(a.hotttnesss);
   })
 }
 
