@@ -42,6 +42,7 @@ function statusChangeCallback(response) {
     // console.log("userId is: " + userId);
     // console.log("userToken is: " + userToken);
     testAPI();
+    //calls beloq functions to get a list of your music and friends 
     returnMusic(userToken, userId);
     returnFriend(userToken, userId);
 
@@ -111,7 +112,9 @@ function testAPI() {
     console.log('Successful login for: ' + response.name);
     document.getElementById('status').innerHTML =
       'Thanks for logging in, ' + response.name + '!';
+    //get the name of the logged in user, and save it to firebase
     name1 = response.name;
+    //remove spaces in the name
     name  = name1.split(' ').join('_');
     myFirebaseRef.set({
       name
@@ -122,10 +125,13 @@ function testAPI() {
 }
 
 function returnFriend(userToken, userId){
+  //takes the userToken and userID of the current logged in user
   var userFBRef = new Firebase("https://social-informor.firebaseio.com/"+name);
   console.log("returnFriendcalled");
   console.log("userToken is: " + userToken);
   console.log("userId is: " + userId);
+  
+  //makes a call to the FB graph api to get a list of your friends limited to 5
   FB.api(userId+'?fields=name,friends.limit(5)', 'get', function(response) {
     console.log(' friends returned: ' + JSON.stringify(response));
     // var name = response.name;
@@ -147,17 +153,22 @@ function returnFriend(userToken, userId){
 }
 
 function returnMusic(userToken, userId){
+  //takes in the user id  and token of the current user
   // var musicFBRef = new Firebase("https://social-informor.firebaseio.com/Music")
+
   var userFBRef = new Firebase("https://social-informor.firebaseio.com/"+name);
   console.log("returnMusic called");
   // console.log("userToken is: " + userToken);
   // console.log("userId is: " + userId);
+
+  //uses the user id to query this user's music likes 
   FB.api(userId+'?fields=music', 'get', function(response) {
     console.log('Music ' + JSON.stringify(response));
     var music = response.music;
     console.log('music in music function is:  ' + JSON.stringify(music));
     // console.log('data in music function is:  ' + JSON.stringify(response));
     var musicArr = response.music.data;
+    //saves this music as a json object to Firebase
      userFBRef.update({
       Music: music
     });
@@ -180,12 +191,15 @@ function returnMusic(userToken, userId){
 
 
 function returnFriendMusic(friends){
+  // takes in a json objects are your friends
   console.log("friends object in returnFriendMusic is: " + friends);
   var userFBRef = new Firebase("https://social-informor.firebaseio.com/"+name);
   for (i = 0; i < friends.length; i++) { 
+    //for eahc friend gets the friend id and name
       friendId = friends[i].id;
       friendName = friends[i].name;
       console.log("friendId is: " + friendId);
+      // queries FB graphy API using the friend ID to get his or her music likes
       FB.api(friendId+'?fields=music', 'get', function(response) {
         console.log('music for ' + friendName + "is: " + JSON.stringify(response));
         friendMusic = response.music.data;
@@ -237,6 +251,10 @@ function getHotness(friendsArtist, friendName){
     })
   // http://developer.echonest.com/api/v4/artist/hotttnesss?api_key=FILDTEOIK2HBORODV&id=ARH6W4X1187B99274F&format=json
   displayHotness(artistHotness);
+  //get top 10 songs from artistHotness array
+  getArtistSongs(artistHotness);
+  //get twitter handles of top 10 hottest artists
+  getTwitterHandles(artistHotness);
 }
 
 function hasWhiteSpace(s) {
@@ -257,6 +275,35 @@ function displayHotness(array){
       console.log("artist name is: " + name + " hotness score is: " + hotness_score);
       $( "#hot_artists" ).append( "<li>" + name + ": " + "score: " +hotness_score + "</li>" );
   }
+}
+
+function displayNews{
+
+}
+
+function getArtistSongs(array){
+  //return top 10 songs, 1 ofr each artist in array
+  //query using artist id
+  for (i = 0; i < 10 ; i++) { 
+      var name = array[i].name;
+      var hotness_score = array[i].hotttnesss;
+      var artist_id = array[i].id;
+  //     console.log("artist name is: " + name + " hotness score is: " + hotness_score);
+  //     $( "#hot_artists" ).append( "<li>" + name + ": " + "score: " +hotness_score + "</li>" );
+  }
+}
+
+function getTwitterHandles(array){
+  //return twitter handles of top 10 hottest artists
+  //query using aritst id
+   for (i = 0; i < 10 ; i++) { 
+      var name = array[i].name;
+      var hotness_score = array[i].hotttnesss;
+      var artist_id = array[i].id;
+      // console.log("artist name is: " + name + " hotness score is: " + hotness_score);
+      // $( "#hot_artists" ).append( "<li>" + name + ": " + "score: " +hotness_score + "</li>" );
+  }
+
 }
 
 
