@@ -17,6 +17,8 @@ var name;
 var hotnessArray1 = [];
 var friendMusicArray = [];
 
+var echonest = new Echonest("UVTZMTHARGEDWUD3W");
+
 
 (function(d, s, id){
   var js, fjs = d.getElementsByTagName(s)[0];
@@ -295,6 +297,10 @@ function getArtistSongs(array){
       var artist_id = array[i].id;
 
       var artist_top_songs = [];
+
+      echonest.artist(name).images( function(imageCollection) {
+          $('body').prepend( imageCollection.to_html('<img src="${url}">') );
+      });
 
       url2 = urlSpotify + "/v1/artists/" + artist_id + "/top-tracks" + "?country=US";
       console.log("url is: " + url2);
