@@ -77,7 +77,7 @@ $(document).ready(function() {
 		for (var i = 0; i < data.response.songs.length; i++) {
 			var title = data.response.songs[i].title;
 			console.log("song: " + title);
-			$( "#songs" ).append( "<li>"+name+"</li>" );
+			$( "#songs" ).append( "<li>"+title+"</li>" );
    		console.log(i);
    // more statements
 		}
