@@ -21,6 +21,7 @@ var friendMusicArray = [];
 var name;
 var object = [];
 var topTenArtists = [];
+var twitterHandles = [];
 
 // $(document).ready(function() {
 //   $('#queryFB4').on('click', queryFireBase);
@@ -330,11 +331,12 @@ function queryFireBase(){
         }
         else {
           tracker +=1;
-          topTenArtists.push(array[i]);
           artistName = array[i].name;
           hotness_score = array[i].hotttnesss;
           console.log("artist name is: " + artistName + " hotness score is: " + hotness_score);
           $( "#hot_artists" ).append( "<li>" + artistName + ": " + "score: " +hotness_score + "</li>" );
+          topTenArtists.push(array[i]);
+          console.log("topTenArtists array in displayFireBaseResults is : " + topTenArtists);
         }
       }
       else {
@@ -349,11 +351,42 @@ function queryFireBase(){
     }
   }
 
+  function getTwitterHandles() {
+    console.log("get twitter Handles Button clicked");
+    window.alert("get twitterHandles clicked");
+    console.log("top ten artists array is: " + topTenArtists);
+    //return twitter handles of top 10 hottest artists
+  //query using aritst id
+  // url = "https://developer.echonest.com/api/v4/artist/twitter?api_key=UVTZMTHARGEDWUD3W&id=ARH6W4X1187B99274F&format=json"
+  // url2 = url+artistSyntax+hotness+APIpart+"&name="+artist2+"&format=json";
+    for (i = 0; i < topTenArtists.length ; i++) { 
+      var id = topTenArtists[i].id;
+      url2 = url+artistSyntax+"twitter?"+APIpart+"&id="+id+"&format=json";
+      $.get(url2, function(data, status){
+        // console.log("data get Hotness is: " + JSON.stringify(data) + "\nStatus: " + status);
+        console.log("twitter handle data is: " + JSON.stringify(data.response.artist));
+        twitterHandles.push(data.response.artist);
+      // console.log("artist name is: " + name + " hotness score is: " + hotness_score);
+      // $( "#hot_artists" ).append( "<li>" + name + ": " + "score: " +hotness_score + "</li>" );
+      });
+    }
+    console.log("twitterHandled data is " + twitterHandles);
+  }
+
+function returnTweets(){
+  var twitter_url = "https://api.twitter.com/1.1/search/tweets.json?q=from%3AZedd&src=typd"
+}
+
+
 window.onload = function () {
   document.getElementById("queryFB4").onclick = queryFireBase;
-  // document.getElementById("queryFB").onclick = displayFireBaseResults(object);
+  document.getElementById("get_twitter_handles").onclick = getTwitterHandles;
     
 };
+
+
+
+
 
 
 
@@ -404,16 +437,6 @@ window.onload = function () {
 // }
 
 function getArtistSongs(array){
-  //return top 10 songs, 1 of each artist in array
-  //query using artist id
-  // for (i = 0; i < 10 ; i++) { 
-  //     var name = array[i].name;
-  //     var hotness_score = array[i].hotttnesss;
-  //     var artist_id = array[i].id;
-  // //     console.log("artist name is: " + name + " hotness score is: " + hotness_score);
-  // //     $( "#hot_artists" ).append( "<li>" + name + ": " + "score: " +hotness_score + "</li>" );
-  // }
-
   var songs = [];
   for (i = 0; i < 10 ; i++) { 
       var name = array[i].name;
@@ -450,18 +473,6 @@ function getArtistSongs(array){
 }
 
 
-function getTwitterHandles(array){
-  //return twitter handles of top 10 hottest artists
-  //query using aritst id
-  //  for (i = 0; i < 10 ; i++) { 
-  //     var name = array[i].name;
-  //     var hotness_score = array[i].hotttnesss;
-  //     var artist_id = array[i].id;
-  //     // console.log("artist name is: " + name + " hotness score is: " + hotness_score);
-  //     // $( "#hot_artists" ).append( "<li>" + name + ": " + "score: " +hotness_score + "</li>" );
-  // }
-
-}
 
 
 
