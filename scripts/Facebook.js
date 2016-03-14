@@ -303,7 +303,6 @@ function displayHotness(array){
 function getArtistSongs(array){
   //return top 10 songs, 1 of each artist in array
   //query using artist id
-<<<<<<< HEAD
   // for (i = 0; i < 10 ; i++) { 
   //     var name = array[i].name;
   //     var hotness_score = array[i].hotttnesss;
@@ -311,7 +310,7 @@ function getArtistSongs(array){
   // //     console.log("artist name is: " + name + " hotness score is: " + hotness_score);
   // //     $( "#hot_artists" ).append( "<li>" + name + ": " + "score: " +hotness_score + "</li>" );
   // }
-=======
+
   var songs = [];
   for (i = 0; i < 10 ; i++) { 
       var name = array[i].name;
@@ -345,7 +344,6 @@ function getArtistSongs(array){
   //     console.log("artist name is: " + name + " hotness score is: " + hotness_score);
   //     $( "#hot_artists" ).append( "<li>" + name + ": " + "score: " +hotness_score + "</li>" );
   }
->>>>>>> f6f336c77f8ac76d5a0a2ac5f3e874caa8087f03
 }
 
 function getTwitterHandles(array){
