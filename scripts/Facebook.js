@@ -242,10 +242,12 @@ function getHotness(friendMusicArray){
   // console.log("gethotness called, friendMusic array is:  " + friendMusicArray);
   var userFBRef = new Firebase("https://social-informor.firebaseio.com/"+name);
   for (i = 0; i < friendMusicArray.length; i++) {
-  console.log("friendMusicArray," + "for index " + i + "is: " + friendMusicArray[i]);
-  friendsArtist =friendMusicArray[i];
-    for (i = 0; i < friendsArtist.length; i++) { 
-      var artist = friendsArtist[i].name;
+    console.log("friendMusicArray," + "for index " + i + "is: " + JSON.stringify(friendMusicArray[i]));
+    var friendsArtist =friendMusicArray[i].music.data[0].name;
+    console.log("friendsArtist in get hotness is" + friendsArtist);
+    for (x = 0; x < friendMusicArray[i].music.data.length; x++) { 
+      var artist = friendMusicArray[i].music.data[x].name;
+      console.log("artist in nested for loop is: " + artist)
       if (hasWhiteSpace(artist) === true ){
         console.log("artist has whitespace " + artist);
         artist2 = artist.split(' ').join('+');
@@ -269,7 +271,7 @@ function getHotness(friendMusicArray){
         }
         
       });
-      console.log("artistHotness array is: " + artistHotness);
+    //   console.log("artistHotness array is: " + artistHotness);
     }
   }
   // userFBRef.update({
@@ -284,7 +286,7 @@ function getHotness(friendMusicArray){
   userFBRef.update({
     artistHotness
   });
-  // https://developer.echonest.com/api/v4/artist/hotttnesss?api_key=FILDTEOIK2HBORODV&id=ARH6W4X1187B99274F&format=json
+  // // https://developer.echonest.com/api/v4/artist/hotttnesss?api_key=FILDTEOIK2HBORODV&id=ARH6W4X1187B99274F&format=json
   displayHotness(artistHotness);
   //get top 10 songs from artistHotness array
   // getArtistSongs(artistHotness);
