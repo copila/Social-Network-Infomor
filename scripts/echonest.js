@@ -16,13 +16,20 @@ $(document).ready(function() {
 	var start = "0"
 	var artist;
 
-	document.getElementById("search").onclick = function() {buttonClick()};
+	// document.getElementById("search").onclick = function() {buttonClick()};
 
 	$('#search').on('click', buttonClick);
 
 
 	function buttonClick() {
-		 
+		console.log("search button clicked");
+		artist = document.getElementById('artiste').value;
+		console.log("artist serached is: " + artist);
+		url2 = url+artistSyntax+news+APIpart+"&name="+artist+"&results="+results+"&start="+start;
+		console.log("url is: " + url2);
+		getURL(url2);
+		window.alert("you selected: " + artist +"!");
+		document.getElementById('artiste').value = "";
 
 	}
 

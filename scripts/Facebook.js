@@ -400,7 +400,7 @@ function getArtistSongs(array){
   //     $( "#hot_artists" ).append( "<li>" + name + ": " + "score: " +hotness_score + "</li>" );
   }
 }
->>>>>>> dfff4b75551f252074d680afe7889706fa0cbdf9
+
 
 function getTwitterHandles(array){
   //return twitter handles of top 10 hottest artists
