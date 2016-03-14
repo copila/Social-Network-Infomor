@@ -313,9 +313,9 @@ function displayHotness(array){
 
 
 
-// $(document).ready(function() {
-//   $('#hot_artists').on('click', 'input', function() { queryFireBase()});
-// });
+$(document).ready(function() {
+  $('#queryFB2').on('click', 'input', function() { queryFireBase()});
+});
 
 
 // $(document).on("click", "#hot_artists", function (){
@@ -323,15 +323,15 @@ function displayHotness(array){
 //   window.alert("you queried firebase");
 // });
 
-// function queryFireBase(){
-//   console.log("queryFireBase called!");
-//   window.alert("you queried firebase");
-//   var artistHotnessRef = new Firebase("https://social-informor.firebaseio.com/"+name+"artistHotness");
-//   artistHotnessRef.orderByChild("hotttnesss").limitToLast(10).on("child_added", function(snapshot) {
-//     var object = snapshot.val();
-//     console.log("snapshot value is: ", JSON.stringify(object));
-//   });
-// }
+function queryFireBase(){
+  console.log("queryFireBase called!");
+  window.alert("you queried firebase");
+  var artistHotnessRef = new Firebase("https://social-informor.firebaseio.com/"+name+"artistHotness");
+  artistHotnessRef.orderByChild("hotttnesss").limitToLast(10).on("child_added", function(snapshot) {
+    var object = snapshot.val();
+    console.log("snapshot value is: ", JSON.stringify(object));
+  });
+}
 
 
 
