@@ -311,6 +311,17 @@ function displayHotness(array){
   }
 }
 
+$('#hot_artists').on('click', queryFireBase();
+
+function queryFireBase(){
+  var artistHotnessRef = new Firebase("https://social-informor.firebaseio.com/"+name+"artistHotness");
+artistHotnessRef.orderByChild("hotttnesss").limitToLast(10).on("child_added", function(snapshot) {
+  console.log(snapshot.key() + " was " + snapshot.val().height + " meters tall");
+});
+
+}
+
+
 
 
 // function getArtistSongs(array){
