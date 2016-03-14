@@ -1,57 +1,50 @@
-// // Your API Key: UVTZMTHARGEDWUD3W 
+// Your API Key: UVTZMTHARGEDWUD3W 
 
-// // Your Consumer Key: 11a365de0a868cacfcb4e2fa4e9dcf5a 
+// Your Consumer Key: 11a365de0a868cacfcb4e2fa4e9dcf5a 
 
-// // Your Shared Secret: xpHsJX7ZSyKkng10pCkDWQ
+// Your Shared Secret: xpHsJX7ZSyKkng10pCkDWQ
 
-// // $(document).ready(function() {
-
-
-// 	// var APIKEY = "UVTZMTHARGEDWUD3W";
-// 	// var url = "https://developer.echonest.com/api/v4/";
-// 	// var artistSyntax = "artist/"
-// 	// var news = "news?"
-// 	// var APIpart = "api_key="+APIKEY;
-// 	// var results= "4";
-// 	// var start = "0"
-// 	// var artist;
-
-// 	// document.getElementById("search").onclick = function() {buttonClick()};
-
-// // 	$('#search').on('click', buttonClick);
+$(document).ready(function() {
 
 
-// // 	function buttonClick() {
-// // 		console.log("search button clicked");
-// // 		artist = document.getElementById('artiste').value;
-// // 		console.log("artist serached is: " + artist);
-// // 		url2 = url+artistSyntax+news+APIpart+"&name="+artist+"&results="+results+"&start="+start;
-// // 		console.log("url is: " + url2);
-// // 		getURL(url2);
-// // 		window.alert("you selected: " + artist +"!");
-// // 		document.getElementById('artiste').value = "";
+	var APIKEY = "UVTZMTHARGEDWUD3W";
+	var url = "https://developer.echonest.com/api/v4/";
+	var artistSyntax = "artist/"
+	var news = "news?"
+	var APIpart = "api_key="+APIKEY;
+	var results= "4";
+	var start = "0"
+	var artist;
 
-// // 	}
+	document.getElementById("search").onclick = function() {buttonClick()};
 
-// // 	function getURL(url2){
+	$('#search').on('click', buttonClick);
 
-// // 		$.get(url2, function(data, status){
-// //         console.log("Data: " + JSON.stringify(data) + "\nStatus: " + status);
-// //         formatResults(data);
-// //     	});
-// // 	}
 
-// // 	function formatResults(data){
-// // 		for (var i = 0; i < data.response.news.length; i++) {
-// // 			var name = data.response.news[i].name;
-// // 			console.log("article name is: " + name);
-// // 			$( "#results" ).append( "<li>"+name+"</li>" );
-// //    		console.log(i);
-// //    // more statements
-// // 		}
-// // 	}
+	function buttonClick() {
+		 
 
-// // });
+	}
+
+	function getURL(url2){
+
+		$.get(url2, function(data, status){
+        console.log("Data: " + JSON.stringify(data) + "\nStatus: " + status);
+        formatResults(data);
+    	});
+	}
+
+	function formatResults(data){
+		for (var i = 0; i < data.response.news.length; i++) {
+			var name = data.response.news[i].name;
+			console.log("article name is: " + name);
+			$( "#results" ).append( "<li>"+name+"</li>" );
+   		console.log(i);
+   // more statements
+		}
+	}
+
+});
 
 // $(document).ready(function() {
 
