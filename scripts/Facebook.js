@@ -246,18 +246,18 @@ function getHotness(friendMusicArray){
       else{
         artist2 = artist;
       }
-      console.log("artist name in getHotness is: " + artist2);
+      // console.log("artist name in getHotness is: " + artist2);
       url2 = url+artistSyntax+hotness+APIpart+"&name="+artist2+"&format=json";
-      console.log("url is: " + url2);
+      // console.log("url is: " + url2);
       $.get(url2, function(data, status){
-        console.log("data get Hotness is: " + JSON.stringify(data) + "\nStatus: " + status);
+        // console.log("data get Hotness is: " + JSON.stringify(data) + "\nStatus: " + status);
         hotnessArray1.push(data);
         try{
           if (data.response.artist != undefined) {
             var artistsInfo = data.response.artist;
-            console.log("artistInfo is: " + JSON.stringify(artistsInfo));
-            artistHotness.push(JSON.stringify(artistsInfo));
-            console.log("artistHotness is: " + artistHotness);
+            // console.log("artistInfo is: " + JSON.stringify(artistsInfo));
+            artistHotness.push(artistsInfo);
+            // console.log("artistHotness is: " + artistHotness);
           }
           else {
           console.log("NOOO response for this artist: ");
@@ -266,11 +266,16 @@ function getHotness(friendMusicArray){
         catch (error){
           console.log(stringify(error));
         }
+        finally {
+          console.log("in finally portion");
+          userFBRef.update({
+            artistHotness
+          });
+        }
       });
     //   console.log("artistHotness array is: " + artistHotness);
     }
   }
- 
   artistHotness.sort(function(b,a) {
     return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
   });
