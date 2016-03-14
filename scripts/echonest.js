@@ -68,7 +68,7 @@ $(document).ready(function() {
 					+ "&start="
 					+ start;
 			console.log("url is: " + url2);
-			setTimeout(getURLTracks(url2, artists[i]), 100);
+			setTimeout(getURLTracks(url2, artists[i]), 200);
 		}
 		document.getElementById('artiste').value = "";
 	}
