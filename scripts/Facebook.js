@@ -313,12 +313,15 @@ function displayHotness(array){
 
 
 
-$(document).ready(function() {
-  $('#hot_artists').on('click', 'input', function() { queryFireBase()});
-});
+// $(document).ready(function() {
+//   $('#hot_artists').on('click', 'input', function() { queryFireBase()});
+// });
 
 
-
+$(document).on("click", "#hot_artists", function (){
+  console.log("hot artists button clicked")
+  window.alert("you queried firebase");
+}
 
 function queryFireBase(){
   console.log("queryFireBase called!");
