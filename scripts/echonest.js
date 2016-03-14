@@ -19,6 +19,7 @@ $(document).ready(function() {
 	var start 			= "0"
 	var artist;
 	var object = [];
+	var topTenArtists = [];
 
 
 
@@ -123,13 +124,45 @@ $(document).ready(function() {
 
     function displayFireBaseResults(array){
 		console.log("display hotness function called");
-		for (i = 0; i < 10 ; i++) { 
-			console.log("object is: " + JSON.stringify(array[i]));
-			var artistName = array[i].name;
-			var hotness_score = array[i].hotttnesss;
-			console.log("artist name is: " + artistName + " hotness score is: " + hotness_score);
-			$( "#hot_artists2" ).append( "<li>" + artistName + ": " + "score: " +hotness_score + "</li>" );
-  		}
+		var numOfResults = 10;
+		var tracker = 0;
+		var artistName = '';
+		var hotness_score;
+		i = 0;
+		while (tracker < 11){
+			if (i > 0) {
+				if (array[i].name === array[i-1].name){
+					console.log("duplicate value");
+				}
+				else {
+					tracker +=1;
+					topTenArtists.push(array[i]);
+					artistName = array[i].name;
+					hotness_score = array[i].hotttnesss;
+					console.log("artist name is: " + artistName + " hotness score is: " + hotness_score);
+					$( "#hot_artists2" ).append( "<li>" + artistName + ": " + "score: " +hotness_score + "</li>" );
+				}
+			}
+			else {
+				tracker +=1;
+				topTenArtists.push(array[i]);
+				artistName = array[i].name;
+				hotness_score = array[i].hotttnesss;
+				console.log("artist name is: " + artistName + " hotness score is: " + hotness_score);
+				$( "#hot_artists2" ).append( "<li>" + artistName + ": " + "score: " +hotness_score + "</li>" );
+			}
+			i += 1;
+			// console.log("object is: " + JSON.stringify(array[i]));
+			// var artistName = array[i].name;
+			// var hotness_score = array[i].hotttnesss;
+		}
+		// for (i = 0; i < 10 ; i++) { 
+		// 	console.log("object is: " + JSON.stringify(array[i]));
+		// 	var artistName = array[i].name;
+		// 	var hotness_score = array[i].hotttnesss;
+		// 	console.log("artist name is: " + artistName + " hotness score is: " + hotness_score);
+		// 	$( "#hot_artists2" ).append( "<li>" + artistName + ": " + "score: " +hotness_score + "</li>" );
+  // 		}
 	}
 
 
