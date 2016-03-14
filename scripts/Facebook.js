@@ -15,6 +15,7 @@ var artist;
 Firebase.enableLogging(true);
 var myFirebaseRef = new Firebase("https://social-informor.firebaseio.com/");
 var artistHotness = [];
+var artistInfo = [];
 // var name;
 var hotnessArray1 = [];
 var friendMusicArray = [];
@@ -218,17 +219,23 @@ function getHotness(friendMusicArray){
         artist2 = artist;
       }
       // console.log("artist name in getHotness is: " + artist2);
-      url2 = url+artistSyntax+hotness+APIpart+"&name="+artist2+"&format=json";
+      // "https://developer.echonest.com/api/v4/artist/profile?api_key=FILDTEOIK2HBORODV&name=weezer&bucket=hotttnesss&bucket=familiarity&bucket=terms"
+      // url2 = url+artistSyntax+hotness+APIpart+"&name="+artist2+"&format=json";
+      url2 = url+artistSyntax+"profile?"+APIpart+"&name="+artist2+"&bucket=hotttnesss&bucket=images&bucket=artist_location&bucket=songs&format=json";
+      console.log("url2 is " + url2);
+      // url2 = url+artistSyntax+hotness+APIpart+"&name="+artist2+"&format=json";
       // console.log("url is: " + url2);
       $.get(url2, function(data, status){
-        // console.log("data get Hotness is: " + JSON.stringify(data) + "\nStatus: " + status);
-        hotnessArray1.push(data);
+        console.log("data get Hotness is: " + JSON.stringify(data) + "\nStatus: " + status);
+        // hotnessArray1.push(data);
         try{
           if (data.response.artist != undefined) {
-            var artistsInfo = data.response.artist;
+            var artistResponse = data.response.artist;
             // console.log("artistInfo is: " + JSON.stringify(artistsInfo));
-            artistHotness.push(artistsInfo);
-            // console.log("artistHotness is: " + artistHotness);
+            artistInfo.push(artistResponse);
+            // userFBRef.update({
+            //   artistsInfo
+            // });
           }
           else {
           console.log("NOOO response for this artist: ");
@@ -240,7 +247,7 @@ function getHotness(friendMusicArray){
         finally {
           console.log("in finally portion");
           userFBRef.update({
-            artistHotness
+            artistInfo
           });
         }
       });
@@ -250,12 +257,12 @@ function getHotness(friendMusicArray){
   artistHotness.sort(function(b,a) {
     return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
   });
-  console.log("out of both for loops artistHotness is getHotness is: " + artistHotness);
+  console.log("out of both for loops artistInfo in getHotness is: " + artistInfo);
   userFBRef.update({
-    artistHotness
+    artistsInfo
   });
   // // https://developer.echonest.com/api/v4/artist/hotttnesss?api_key=FILDTEOIK2HBORODV&id=ARH6W4X1187B99274F&format=json
-  displayHotness(artistHotness);
+  displayHotness(artistInfo);
   //get top 10 songs from artistHotness array
   // getArtistSongs(artistHotness);
   // //get twitter handles of top 10 hottest artists
@@ -295,8 +302,8 @@ function displayHotness(array){
 function queryFireBase(){
   console.log("queryFireBase called!");
   window.alert("you queried firebase");
-  var artistHotnessRef = new Firebase("https://social-informor.firebaseio.com/"+name+"/artistHotness");
-  artistHotnessRef.on("value", function(snapshot) {
+  var artistInfoRef = new Firebase("https://social-informor.firebaseio.com/"+name+"/artistInfo");
+  artistInfoRef.on("value", function(snapshot) {
     object = snapshot.val();
     // snapshot.sort(function(b,a) {
     //   return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
@@ -333,8 +340,9 @@ function queryFireBase(){
           tracker +=1;
           artistName = array[i].name;
           hotness_score = array[i].hotttnesss;
-          console.log("artist name is: " + artistName + " hotness score is: " + hotness_score);
-          $( "#hot_artists" ).append( "<li>" + artistName + ": " + "score: " +hotness_score + "</li>" );
+          song = array[i].songs[0].title; 
+          console.log("artist name is: " + artistName + " hotness score is: " + hotness_score + " top song: " + song);
+          $( "#hot_artists" ).append( "<li>" + artistName + ": " + "score: " +hotness_score + " top song: " +song +"</li>" );
           topTenArtists.push(array[i]);
           console.log("topTenArtists array in displayFireBaseResults is : " + topTenArtists);
         }
@@ -344,8 +352,9 @@ function queryFireBase(){
         topTenArtists.push(array[i]);
         artistName = array[i].name;
         hotness_score = array[i].hotttnesss;
-        console.log("artist name is: " + artistName + " hotness score is: " + hotness_score);
-        $( "#hot_artists" ).append( "<li>" + artistName + ": " + "score: " +hotness_score + "</li>" );
+        song = array[i].songs[0].title;
+        console.log("artist name is: " + artistName + " hotness score is: " + hotness_score + " top song: " + song);
+        $( "#hot_artists" ).append( "<li>" + artistName + ": " + "score: " +hotness_score + " top song: " +song +"</li>" );
       }
       i += 1;
     }
