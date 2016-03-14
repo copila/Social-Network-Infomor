@@ -7,25 +7,28 @@
 $(document).ready(function() {
 
 
-	var APIKEY = "UVTZMTHARGEDWUD3W";
-	var url = "https://developer.echonest.com/api/v4/";
-	var artistSyntax = "artist/"
-	var news = "news?"
-	var APIpart = "api_key="+APIKEY;
-	var results= "4";
-	var start = "0"
+	var APIKEY 			= "UVTZMTHARGEDWUD3W";
+	var url 			= "https://developer.echonest.com/api/v4/";
+	var artistSyntax 	= "artist/"
+	var news 			= "news?"
+	var songs 			= "songs?"
+	var APIpart 		= "api_key="+APIKEY;
+	var results 		= "4";
+	var start 			= "0"
 	var artist;
 
-	document.getElementById("search").onclick = function() {buttonClick()};
+	//document.getElementById("search").onclick = function() {buttonClick()};,
+	//document.getElementById("top-tracks").onclick = function() {buttonClick()};,
 
 	$('#search').on('click', buttonClick);
+	$('#top-tracks').on('click', getTracks);
 
 
 	function buttonClick() {
 		console.log("search button clicked");
 		artist = document.getElementById('artiste').value;
 		console.log("artist serached is: " + artist);
-		url2 = url+artistSyntax+news+APIpart+"&name="+artist+"&results="+results+"&start="+start;
+		url2 = url+artistSyntax+news+APIpart+"&name="+artist+"&start="+start+"&results="+results;
 		console.log("url is: " + url2);
 		getURL(url2);
 		window.alert("you selected: " + artist +"!");
@@ -50,6 +53,37 @@ $(document).ready(function() {
    // more statements
 		}
 	}
+
+	function getTracks() {
+		console.log("top tracks button clicked");
+		artist = "Radiohead";
+		console.log("artist searched is: " + artist);
+		url2 = url+artistSyntax+songs+APIpart+"&name="+artist+"&results="+results+"&start="+start;
+		console.log("url is: " + url2);
+		getURLTracks(url2);
+		window.alert("top tracks for: " + artist +"!");
+		document.getElementById('artiste').value = "";
+
+	}
+
+	function getURLTracks(url2){
+
+		$.get(url2, function(data, status){
+        console.log("Data: " + JSON.stringify(data) + "\nStatus: " + status);
+        formatResultsTracks(data);
+    	});
+	}
+
+	function formatResultsTracks(data){
+		for (var i = 0; i < data.response.songs.length; i++) {
+			var title = data.response.songs[i].title;
+			console.log("song: " + title);
+			$( "#songs" ).append( "<li>"+name+"</li>" );
+   		console.log(i);
+   // more statements
+		}
+	}
+
 
 });
 
