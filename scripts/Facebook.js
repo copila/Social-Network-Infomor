@@ -138,7 +138,7 @@ function returnFriend(userToken, userId){
   console.log("userId is: " + userId);
   
   //makes a call to the FB graph api to get a list of your friends limited to 5
-  FB.api(userId+'?fields=name,friends.limit(5)', 'get', function(response) {
+  FB.api(userId+'?fields=name,friends{music}', 'get', function(response) {
     console.log(' friends returned: ' + JSON.stringify(response));
     // var name = response.name;
     var friends = response.friends;
@@ -148,9 +148,10 @@ function returnFriend(userToken, userId){
     console.log('data in friend function is:  ' + JSON.stringify(data));
     returnFriendMusic(data);
     userFBRef.update({
-      Friends: data
+      "Friends Music": data
     });
     var next = response.friends.paging.next;
+    getHotness(data);
     console.log("paging.next is: " + next);
   //   if (next != undefined){
   //     saveMusicDataToFB(next);
@@ -237,38 +238,39 @@ function returnFriendMusic(friends){
   
 }
 
-function getHotness(friendsArtist){
+function getHotness(friendMusicArray){
   // console.log("gethotness called, friendMusic array is:  " + friendMusicArray);
   var userFBRef = new Firebase("https://social-informor.firebaseio.com/"+name);
-  // for (i = 0; i < friendMusicArray.length; i++) {
-  // console.log("friendMusicArray," + "for index " + i + "is: " + friendMusicArray[i]);
-  // friendsArtist =friendMusicArray[i];
-  for (i = 0; i < friendsArtist.length; i++) { 
-    var artist = friendsArtist[i].name;
-    if (hasWhiteSpace(artist) === true ){
-      console.log("artist has whitespace " + artist);
-      artist2 = artist.split(' ').join('+');
-    }
-    else{
-      artist2 = artist;
-    }
-    console.log("artist name in getHotness is: " + artist2);
-    url2 = url+artistSyntax+hotness+APIpart+"&name="+artist2+"&format=json";
-    console.log("url is: " + url2);
-    $.get(url2, function(data, status){
-      console.log("data get Hotness is: " + JSON.stringify(data) + "\nStatus: " + status);
-      hotnessArray1.push(data);
-      if (data.response.artist != undefined) {
-        var artistsInfo = data.response.artist;
-        console.log("artistInfo is: " + JSON.stringify(artistsInfo));
-        artistHotness.push(artistsInfo);
+  for (i = 0; i < friendMusicArray.length; i++) {
+  console.log("friendMusicArray," + "for index " + i + "is: " + friendMusicArray[i]);
+  friendsArtist =friendMusicArray[i];
+    for (i = 0; i < friendsArtist.length; i++) { 
+      var artist = friendsArtist[i].name;
+      if (hasWhiteSpace(artist) === true ){
+        console.log("artist has whitespace " + artist);
+        artist2 = artist.split(' ').join('+');
       }
-      else {
-        console.log("NOOO response for this artist: ");
+      else{
+        artist2 = artist;
       }
-      
-    });
-    console.log("artistHotness array is: " + artistHotness);
+      console.log("artist name in getHotness is: " + artist2);
+      url2 = url+artistSyntax+hotness+APIpart+"&name="+artist2+"&format=json";
+      console.log("url is: " + url2);
+      $.get(url2, function(data, status){
+        console.log("data get Hotness is: " + JSON.stringify(data) + "\nStatus: " + status);
+        hotnessArray1.push(data);
+        if (data.response.artist != undefined) {
+          var artistsInfo = data.response.artist;
+          console.log("artistInfo is: " + JSON.stringify(artistsInfo));
+          artistHotness.push(artistsInfo);
+        }
+        else {
+          console.log("NOOO response for this artist: ");
+        }
+        
+      });
+      console.log("artistHotness array is: " + artistHotness);
+    }
   }
   // userFBRef.update({
   //   hotnessArray1
