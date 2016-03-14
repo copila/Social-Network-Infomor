@@ -4,6 +4,8 @@
 
 // Your Shared Secret: xpHsJX7ZSyKkng10pCkDWQ
 
+
+
 $(document).ready(function() {
 
 
@@ -16,11 +18,13 @@ $(document).ready(function() {
 	var results 		= "4";
 	var start 			= "0"
 	var artist;
+	var object = [];
 
 
 
 	$('#search').on('click', buttonClick);
 	$('#top-tracks').on('click', getTracks);
+	$('#queryFB3').on('click', queryFireBase);
 
 
 	function buttonClick() {
@@ -91,6 +95,44 @@ $(document).ready(function() {
    // more statements
 		}
 	}
+
+	function queryFireBase(){
+      console.log("queryFireBase called!");
+      window.alert("you queried firebase");
+      var artistHotnessRef = new Firebase("https://social-informor.firebaseio.com/"+"Claire_Opila"+"/artistHotness");
+      artistHotnessRef.on("value", function(snapshot) {
+      	object = snapshot.val();
+        // snapshot.sort(function(b,a) {
+        //   return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
+        // });
+        object.sort(function(b,a) {
+          return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
+        });            
+        // console.log("object after sorting is " + snapshot);
+        console.log("object after sorting is " + object);
+        console.log(JSON.stringify(object[0]));
+        console.log(JSON.stringify(object[1]));
+        console.log("object length is " + object.length);
+        displayFireBaseResults(object);
+        console.log(snapshot.val());
+      }, function (errorObject) {
+        console.log("The read failed: " + errorObject.code);
+      });
+      
+    }
+
+    function displayFireBaseResults(array){
+		console.log("display hotness function called");
+		for (i = 0; i < 10 ; i++) { 
+			console.log("object is: " + JSON.stringify(array[i]));
+			var artistName = array[i].name;
+			var hotness_score = array[i].hotttnesss;
+			console.log("artist name is: " + artistName + " hotness score is: " + hotness_score);
+			$( "#hot_artists2" ).append( "<li>" + artistName + ": " + "score: " +hotness_score + "</li>" );
+  		}
+	}
+
+
 
 
 });

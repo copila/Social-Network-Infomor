@@ -4,6 +4,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
     <link href="stylesheets/style.css" rel="stylesheet">
     <script src="scripts/jquery-2.2.0.min.js"> </script>
+    <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
     <script src="scripts/scripts.js"> </script>  
     <script src = "scripts/echonest.js"> </script>
 
@@ -60,6 +61,7 @@
             </form>
             <input type="button" id="search" class="button" value="Search">
             <input type="button" id="top-tracks" class="button btn btn-spotify" value="Top Tracks">
+            <input type="button" id="queryFB3" class="button btn btn-spotify" value="Top Artists">
         </div>
         <h3>Displaying tracks from:</h3>
         <p><ol>
@@ -73,6 +75,9 @@
         <div>
         <ol class="empty" id="songs"> </ol>
         </div>
+        
+        <div id = "hot_artists2">
+        <div>
         <!--
         <div id="exp_navigation2">
             <input type="button" id="sec_driver" value="Test">

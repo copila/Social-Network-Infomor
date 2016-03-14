@@ -314,7 +314,7 @@ function displayHotness(array){
 
 
 $(document).ready(function() {
-  $('#queryFB2').on('click', 'input', function() { queryFireBase()});
+  $('#queryFB3').on('click', queryFireBase);
 });
 
 
@@ -326,11 +326,11 @@ $(document).ready(function() {
 function queryFireBase(){
   console.log("queryFireBase called!");
   window.alert("you queried firebase");
-  var artistHotnessRef = new Firebase("https://social-informor.firebaseio.com/"+name+"artistHotness");
-  artistHotnessRef.orderByChild("hotttnesss").limitToLast(10).on("child_added", function(snapshot) {
-    var object = snapshot.val();
-    console.log("snapshot value is: ", JSON.stringify(object));
-  });
+  // var artistHotnessRef = new Firebase("https://social-informor.firebaseio.com/"+name+"artistHotness");
+  // artistHotnessRef.orderByChild("hotttnesss").limitToLast(10).on("child_added", function(snapshot) {
+  //   var object = snapshot.val();
+  //   console.log("snapshot value is: ", JSON.stringify(object));
+  // });
 }
 
 
