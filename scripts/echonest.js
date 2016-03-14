@@ -129,7 +129,7 @@ $(document).ready(function() {
 		var artistName = '';
 		var hotness_score;
 		i = 0;
-		while (tracker < 11){
+		while (tracker < 10){
 			if (i > 0) {
 				if (array[i].name === array[i-1].name){
 					console.log("duplicate value");
@@ -140,7 +140,7 @@ $(document).ready(function() {
 					artistName = array[i].name;
 					hotness_score = array[i].hotttnesss;
 					console.log("artist name is: " + artistName + " hotness score is: " + hotness_score);
-					$( "#hot_artists2" ).append( "<li>" + artistName + ": " + "score: " +hotness_score + "</li>" );
+					$( "#empty_artist_list" ).append( "<li>" + artistName + ": " + "score: " +hotness_score + "</li>" );
 				}
 			}
 			else {
@@ -149,7 +149,7 @@ $(document).ready(function() {
 				artistName = array[i].name;
 				hotness_score = array[i].hotttnesss;
 				console.log("artist name is: " + artistName + " hotness score is: " + hotness_score);
-				$( "#hot_artists2" ).append( "<li>" + artistName + ": " + "score: " +hotness_score + "</li>" );
+				$( "#empty_artist_list" ).append( "<li>" + artistName + ": " + "score: " +hotness_score + "</li>" );
 			}
 			i += 1;
 			// console.log("object is: " + JSON.stringify(array[i]));
