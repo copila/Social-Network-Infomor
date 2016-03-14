@@ -12,6 +12,7 @@
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js" type="text/javascript"></script>
     <script src="scripts/echonest.js"> </script> 
     <script src="scripts/Facebook.js"> </script>
+    <script src="scripts/artists.js"> </script>
     <!-- <script src="scripts/spotify.js"> </script> -->
 
 
@@ -105,9 +106,26 @@
 
  -->  
         
-        <div id="exp_navigation2">
-            <input type="button" id="hot_artists" value="Return Hot Artists">
-        </div>
+
+        <input onclick="queryFireBase()" type="button" id="hot_artists" value="Return Hot Artists">
+        <script>
+
+          function queryFireBase(){
+          console.log("queryFireBase called!");
+          window.alert("you queried firebase");
+          var artistHotnessRef = new Firebase("https://social-informor.firebaseio.com/"+name+"/artistHotness");
+          artistHotnessRef.on("value", function(snapshot) {
+            console.log(snapshot.val());
+          }, function (errorObject) {
+            console.log("The read failed: " + errorObject.code);
+          });
+          artistHotnessRef.orderByChild("hotttnesss").limitToLast(10).on("child_added", function(snapshot) {
+            var object = snapshot.val();
+            console.log("snapshot value is: ", JSON.stringify(object));
+          });
+        }
+
+        </script>
         
         </section>
 

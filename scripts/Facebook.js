@@ -318,20 +318,20 @@ function displayHotness(array){
 // });
 
 
-$(document).on("click", "#hot_artists", function (){
-  console.log("hot artists button clicked")
-  window.alert("you queried firebase");
-}
+// $(document).on("click", "#hot_artists", function (){
+//   console.log("hot artists button clicked");
+//   window.alert("you queried firebase");
+// });
 
-function queryFireBase(){
-  console.log("queryFireBase called!");
-  window.alert("you queried firebase");
-  var artistHotnessRef = new Firebase("https://social-informor.firebaseio.com/"+name+"artistHotness");
-  artistHotnessRef.orderByChild("hotttnesss").limitToLast(10).on("child_added", function(snapshot) {
-    var object = snapshot.val();
-    console.log("snapshot value is: ", JSON.stringify(object));
-  });
-}
+// function queryFireBase(){
+//   console.log("queryFireBase called!");
+//   window.alert("you queried firebase");
+//   var artistHotnessRef = new Firebase("https://social-informor.firebaseio.com/"+name+"artistHotness");
+//   artistHotnessRef.orderByChild("hotttnesss").limitToLast(10).on("child_added", function(snapshot) {
+//     var object = snapshot.val();
+//     console.log("snapshot value is: ", JSON.stringify(object));
+//   });
+// }
 
 
 
