@@ -56,13 +56,16 @@ $(document).ready(function() {
 	function getTracks() {
 		console.log("top tracks button clicked");
 		artist = "Radiohead";
-		console.log("artist searched is: " + artist);
-		url2 = url+artistSyntax+songs+APIpart+"&name="+artist+"&results="+results+"&start="+start;
-		console.log("url is: " + url2);
-		getURLTracks(url2);
-		window.alert("top tracks for: " + artist +"!");
-		document.getElementById('artiste').value = "";
+		artists = ["Radiohead", "Led+Zepplin", "The+Beatles"];
+		for (var i = 0; i < artists.length; i++) {
+			console.log("artist searched is: " + artist[i]);
+			url2 = url+artistSyntax+songs+APIpart+"&name="+artists[i]+"&results=3"+"&start="+start;
+			console.log("url is: " + url2);
+			getURLTracks(url2);
+			window.alert("top tracks for: " + artist[i] +"!");
 
+		}
+		document.getElementById('artiste').value = "";
 	}
 
 	function getURLTracks(url2){
