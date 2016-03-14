@@ -15,11 +15,20 @@ var artist;
 Firebase.enableLogging(true);
 var myFirebaseRef = new Firebase("https://social-informor.firebaseio.com/");
 var artistHotness = [];
-var name;
+// var name;
 var hotnessArray1 = [];
 var friendMusicArray = [];
+var name;
+var object = [];
+var topTenArtists = [];
 
+// $(document).ready(function() {
+//   $('#queryFB4').on('click', queryFireBase);
+//   $('.queryFB5').on('click', queryFireBase);
+// });
 // var echonest = new Echonest(APIKEY);
+
+
 
 
 (function(d, s, id){
@@ -116,10 +125,11 @@ function testAPI() {
   console.log('Welcome!  Fetching your information.... ');
   FB.api('/me', function(response) {
     console.log('Successful login for: ' + response.name);
-    document.getElementById('status').innerHTML =
-      'Thanks for logging in, ' + response.name + '!';
-    //get the name of the logged in user, and save it to firebase
     name1 = response.name;
+    document.getElementById('status').innerHTML =
+      'Thanks for logging in, ' + name1 + '!';
+    //get the name of the logged in user, and save it to firebase
+    
     //remove spaces in the name
     name  = name1.split(' ').join('_');
     myFirebaseRef.update({
@@ -188,46 +198,6 @@ function returnMusic(userToken, userId){
 }
 
 
-// function returnFriendMusic(friends){
-//   // takes in a json objects are your friends
-//   console.log("friends object in returnFriendMusic is: " + JSON.stringify(friends));
-//   var userFBRef = new Firebase("https://social-informor.firebaseio.com/"+name);
-//   var friendIdsString = ''; 
-//   for (i = 0; i < friends.length; i++) { 
-//     //for eahc friend gets the friend id and name
-//     friendId = friends[i].id;
-//     friendName = friends[i].name;
-//     if (friendIdsString != ''){
-//       friendIdsString = friendIdsString + ","+friendId;
-//     }
-//     else if (friendIdsString === ''){
-//       friendIdsString = friendId;
-//     }
-//     console.log("friendId is: " + friendId + " friendName is: " + friendName + " friendIdsString is: " + friendIdsString);
-//   }
-//     // queries FB graphy API using the friend ID to get his or her music likes
-//   FB.api('?ids='+friendIdsString+'?fields=music', 'get', function(response) {
-//     console.log('music for all friends is: ' + JSON.stringify(response));
-//     var friendMusic = response.music;
-//       // console.log("friend music for" + friends[i].name + "is: " + JSON.stringify(friendMusic));
-//       // friendMusicArray.push(JSON.stringify(friendMusic));
-//       // getHotness(friendMusic);
-//       // userFBRef.update({
-//       //   friendName
-//       // });
-//       // userFBRef.child(friendName).update({
-//       //     friendMusic
-//       // });
-//   });    
-  
-  // getHotness(friendMusicArray);
-  // userFBRef.update({
-  //       friendMusicArray
-  //     });
-  // console.log("friendmusicArray in return Friend music is: " + JSON.stringify(friendMusicArray));
-  // return friendMusicArray;
-  
-// }
 
 function getHotness(friendMusicArray){
   // console.log("gethotness called, friendMusic array is:  " + friendMusicArray);
@@ -313,9 +283,7 @@ function displayHotness(array){
 
 
 
-$(document).ready(function() {
-  $('#queryFB3').on('click', queryFireBase);
-});
+
 
 
 // $(document).on("click", "#hot_artists", function (){
@@ -326,12 +294,66 @@ $(document).ready(function() {
 function queryFireBase(){
   console.log("queryFireBase called!");
   window.alert("you queried firebase");
-  // var artistHotnessRef = new Firebase("https://social-informor.firebaseio.com/"+name+"artistHotness");
-  // artistHotnessRef.orderByChild("hotttnesss").limitToLast(10).on("child_added", function(snapshot) {
-  //   var object = snapshot.val();
-  //   console.log("snapshot value is: ", JSON.stringify(object));
-  // });
+  var artistHotnessRef = new Firebase("https://social-informor.firebaseio.com/"+name+"/artistHotness");
+  artistHotnessRef.on("value", function(snapshot) {
+    object = snapshot.val();
+    // snapshot.sort(function(b,a) {
+    //   return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
+    // });
+    object.sort(function(b,a) {
+      return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
+    });            
+    // console.log("object after sorting is " + snapshot);
+    console.log("object after sorting is " + object);
+    console.log(JSON.stringify(object[0]));
+    console.log(JSON.stringify(object[1]));
+    console.log("object length is " + object.length);
+    displayFireBaseResults(object);
+    console.log(snapshot.val());
+  }, function (errorObject) {
+    console.log("The read failed: " + errorObject.code);
+  });      
 }
+
+  function displayFireBaseResults(array){
+    console.log("display FireBase Results function called");
+    window.alert("display Artists");
+    var numOfResults = 10;
+    var tracker = 0;
+    var artistName = '';
+    var hotness_score;
+    i = 0;
+    while (tracker < 10){
+      if (i > 0) {
+        if (array[i].name === array[i-1].name){
+          console.log("duplicate value");
+        }
+        else {
+          tracker +=1;
+          topTenArtists.push(array[i]);
+          artistName = array[i].name;
+          hotness_score = array[i].hotttnesss;
+          console.log("artist name is: " + artistName + " hotness score is: " + hotness_score);
+          $( "#hot_artists" ).append( "<li>" + artistName + ": " + "score: " +hotness_score + "</li>" );
+        }
+      }
+      else {
+        tracker +=1;
+        topTenArtists.push(array[i]);
+        artistName = array[i].name;
+        hotness_score = array[i].hotttnesss;
+        console.log("artist name is: " + artistName + " hotness score is: " + hotness_score);
+        $( "#hot_artists" ).append( "<li>" + artistName + ": " + "score: " +hotness_score + "</li>" );
+      }
+      i += 1;
+    }
+  }
+
+window.onload = function () {
+  document.getElementById("queryFB4").onclick = queryFireBase;
+  // document.getElementById("queryFB").onclick = displayFireBaseResults(object);
+    
+};
 
 
 

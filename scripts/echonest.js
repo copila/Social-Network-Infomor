@@ -20,6 +20,7 @@ $(document).ready(function() {
 	var artist;
 	var object = [];
 	var topTenArtists = [];
+	console.log("name is " + name);
 
 
 

@@ -7,6 +7,9 @@
     <script src="scripts/jquery-2.2.0.min.js"> </script>
     <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
     <script src="scripts/jquery.echonest.js" </script>
+    <script type='text/javascript' > 
+      var name.global = "global variable"; 
+    </script>
     <script src="scripts/scripts.js"> </script> 
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.4.4.js" type="text/javascript"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js" type="text/javascript"></script>
@@ -70,10 +73,13 @@
 
             <div id="status">
             </div>
-            <div id ="hot_artists">
-            <h3> Trending Artists Among Your Friends</h3>
+
+            <div>
+              <h3> Trending Artists Among Your Friends</h3>
+              <ol id = "hot_artists"> </ol>
             </div>
 
+          
             <div id ="top_songs">
             <h3> Top Music Among Your Friends</h3>
             </div>
@@ -106,55 +112,9 @@
 
  -->  
         
-        <input  type="button" id="queryFB2" value="queryFB2">
-        <input onclick="queryFireBase()" type="button" id="queryFB" value="Return Hot Artists">
-        <script>
-
-
-          function queryFireBase(){
-          console.log("queryFireBase called!");
-          window.alert("you queried firebase");
-          var artistHotnessRef = new Firebase("https://social-informor.firebaseio.com/"+name+"/artistHotness");
-          var object = [];
-          artistHotnessRef.on("value", function(snapshot) {
-            var object = snapshot.val();
-            // snapshot.sort(function(b,a) {
-            //   return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
-            // });
-            object.sort(function(b,a) {
-              return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
-            });            
-            // console.log("object after sorting is " + snapshot);
-            console.log("object after sorting is " + object);
-            console.log(JSON.stringify(object[0]));
-            console.log(JSON.stringify(object[1]));
-            console.log("object length is " + object.length);
-
-            console.log(snapshot.val());
-          }, function (errorObject) {
-            console.log("The read failed: " + errorObject.code);
-          });
-          // for (i = 0; object.length < 10 ; i++) {
-          //     console.log (JSON.Stringify(object[i]);
-          //     var artistName = object[i].name;
-          //     var hotness_score = object[i].hotttnesss;
-          //     console.log("artist name is: " + artistName + " hotness score is: " + hotness_score);
-          //     $( "#hot_artists" ).append( "<li>" + artistName + ": " + "score: " +hotness_score + "</li>");
-          //   }
-          // artistHotnessRef.orderByChild("hotttnesss").limitToLast(10).on("value", function(snapshot) {
-          //   var object = snapshot.val();
-          //   // for (i = 0; object.length < 10 ; i++) { 
-          //   //   var artistName = object[i].name;
-          //   //   var hotness_score = object[i].hotttnesss;
-          //   //   console.log("artist name is: " + artistName + " hotness score is: " + hotness_score);
-          //   //   $( "#hot_artists" ).append( "<li>" + artistName + ": " + "score: " +hotness_score + "</li>" );
-            // }
-          //   console.log("artist is: " + object.0.name);
-          //   console.log("snapshot value is: ", JSON.stringify(object));
-          // });
-        }
-
-        </script>
+        <input  type="button" id="queryFB4" value="queryFB4">
+        <input type="button" id="queryFB" value="Return Hot Artists">
+        
         
         </section>
 
