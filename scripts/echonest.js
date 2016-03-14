@@ -16,7 +16,7 @@ $(document).ready(function() {
 	var start = "0"
 	var artist;
 
-	// document.getElementById("search").onclick = function() {buttonClick()};
+	document.getElementById("search").onclick = function() {buttonClick()};
 
 	$('#search').on('click', buttonClick);
 
