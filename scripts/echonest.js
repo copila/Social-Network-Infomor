@@ -56,31 +56,31 @@ $(document).ready(function() {
 	function getTracks() {
 		console.log("top tracks button clicked");
 		artist = "Radiohead";
-		artists = ["Radiohead", "Led+Zepplin", "The+Beatles"];
+		artists = ["Radiohead", "Led+Zeppelin", "The+Beatles"];
 		for (var i = 0; i < artists.length; i++) {
 			console.log("artist searched is: " + artist[i]);
 			url2 = url+artistSyntax+songs+APIpart+"&name="+artists[i]+"&results=3"+"&start="+start;
 			console.log("url is: " + url2);
-			getURLTracks(url2);
-			window.alert("top tracks for: " + artist[i] +"!");
+			getURLTracks(url2), artist[i];	
+			window.alert("top tracks for: " + artists[i] +"!");
 
 		}
 		document.getElementById('artiste').value = "";
 	}
 
-	function getURLTracks(url2){
+	function getURLTracks(url2, artist){
 
 		$.get(url2, function(data, status){
         console.log("Data: " + JSON.stringify(data) + "\nStatus: " + status);
-        formatResultsTracks(data);
+        formatResultsTracks(data, artist);
     	});
 	}
 
-	function formatResultsTracks(data){
+	function formatResultsTracks(data, artist){
 		for (var i = 0; i < data.response.songs.length; i++) {
 			var title = data.response.songs[i].title;
 			console.log("song: " + title);
-			$( "#songs" ).append( "<li>"+title+"</li>" );
+			$( "#songs" ).append( "<li>"+artist+" - "+title+"</li>" );
    		console.log(i);
    // more statements
 		}
