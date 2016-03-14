@@ -181,9 +181,9 @@ function returnMusic(userToken, userId){
 
   //uses the user id to query this user's music likes 
   FB.api(userId+'?fields=music', 'get', function(response) {
-    console.log('Music ' + JSON.stringify(response));
+    // console.log('Music ' + JSON.stringify(response));
     var music = response.music;
-    console.log('music in music function is:  ' + JSON.stringify(music));
+    // console.log('music in music function is:  ' + JSON.stringify(music));
     // console.log('data in music function is:  ' + JSON.stringify(response));
     var musicArr = response.music.data;
     //saves this music as a json object to Firebase
@@ -206,52 +206,57 @@ function getHotness(friendMusicArray){
   var userFBRef = new Firebase("https://social-informor.firebaseio.com/"+name);
   for (i = 0; i < friendMusicArray.length; i++) {
     // console.log("friendMusicArray," + "for index " + i + "is: " + JSON.stringify(friendMusicArray[i]));
-    var friendsArtist =friendMusicArray[i].music.data[0].name;
+    // var friendsArtist =friendMusicArray[i].music.data[0].name;
     // console.log("friendsArtist in get hotness is" + friendsArtist);
-    for (x = 0; x < friendMusicArray[i].music.data.length; x++) { 
-      var artist = friendMusicArray[i].music.data[x].name;
-      // console.log("artist in nested for loop is: " + artist)
-      if (hasWhiteSpace(artist) === true ){
-        // console.log("artist has whitespace " + artist);
-        artist2 = artist.split(' ').join('+');
-      }
-      else{
-        artist2 = artist;
-      }
-      // console.log("artist name in getHotness is: " + artist2);
-      // "https://developer.echonest.com/api/v4/artist/profile?api_key=FILDTEOIK2HBORODV&name=weezer&bucket=hotttnesss&bucket=familiarity&bucket=terms"
-      // url2 = url+artistSyntax+hotness+APIpart+"&name="+artist2+"&format=json";
-      url2 = url+artistSyntax+"profile?"+APIpart+"&name="+artist2+"&bucket=hotttnesss&bucket=images&bucket=artist_location&bucket=songs&format=json";
-      console.log("url2 is " + url2);
-      // url2 = url+artistSyntax+hotness+APIpart+"&name="+artist2+"&format=json";
-      // console.log("url is: " + url2);
-      $.get(url2, function(data, status){
-        console.log("data get Hotness is: " + JSON.stringify(data) + "\nStatus: " + status);
-        // hotnessArray1.push(data);
-        try{
-          if (data.response.artist != undefined) {
-            var artistResponse = data.response.artist;
-            // console.log("artistInfo is: " + JSON.stringify(artistsInfo));
-            artistInfo.push(artistResponse);
-            // userFBRef.update({
-            //   artistsInfo
-            // });
+    try{
+      for (x = 0; x < friendMusicArray[i].music.data.length; x++) { 
+        var artist = friendMusicArray[i].music.data[x].name;
+        // console.log("artist in nested for loop is: " + artist)
+        if (hasWhiteSpace(artist) === true ){
+          // console.log("artist has whitespace " + artist);
+          artist2 = artist.split(' ').join('+');
+        }
+        else{
+          artist2 = artist;
+        }
+        // console.log("artist name in getHotness is: " + artist2);
+        // "https://developer.echonest.com/api/v4/artist/profile?api_key=FILDTEOIK2HBORODV&name=weezer&bucket=hotttnesss&bucket=familiarity&bucket=terms"
+        // url2 = url+artistSyntax+hotness+APIpart+"&name="+artist2+"&format=json";
+        url2 = url+artistSyntax+"profile?"+APIpart+"&name="+artist2+"&bucket=hotttnesss&bucket=images&bucket=artist_location&bucket=songs&format=json";
+        console.log("url2 is " + url2);
+        // url2 = url+artistSyntax+hotness+APIpart+"&name="+artist2+"&format=json";
+        // console.log("url is: " + url2);
+        $.get(url2, function(data, status){
+          console.log("data get Hotness is: " + JSON.stringify(data) + "\nStatus: " + status);
+          // hotnessArray1.push(data);
+          try{
+            if (data.response.artist != undefined) {
+              var artistResponse = data.response.artist;
+              // console.log("artistInfo is: " + JSON.stringify(artistsInfo));
+              artistInfo.push(artistResponse);
+              // userFBRef.update({
+              //   artistsInfo
+              // });
+            }
+            else {
+            console.log("NOOO response for this artist: ");
+            }
           }
-          else {
-          console.log("NOOO response for this artist: ");
+          catch (error){
+            console.log(stringify(error));
           }
-        }
-        catch (error){
-          console.log(stringify(error));
-        }
-        finally {
-          console.log("in finally portion");
-          userFBRef.update({
-            artistInfo
-          });
-        }
-      });
-    //   console.log("artistHotness array is: " + artistHotness);
+          finally {
+            console.log("in finally portion");
+            userFBRef.update({
+              artistInfo
+            });
+          }
+        });
+      //   console.log("artistHotness array is: " + artistHotness);
+      }
+    }
+    catch(errorObject){
+      console.log("no music data for that friend" + errorObject);
     }
   }
   artistHotness.sort(function(b,a) {
@@ -259,7 +264,7 @@ function getHotness(friendMusicArray){
   });
   console.log("out of both for loops artistInfo in getHotness is: " + artistInfo);
   userFBRef.update({
-    artistsInfo
+    artistInfo
   });
   // // https://developer.echonest.com/api/v4/artist/hotttnesss?api_key=FILDTEOIK2HBORODV&id=ARH6W4X1187B99274F&format=json
   displayHotness(artistInfo);
