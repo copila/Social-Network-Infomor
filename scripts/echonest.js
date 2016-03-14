@@ -58,12 +58,13 @@ $(document).ready(function() {
 		artist = "Radiohead";
 		artists = ["Radiohead", "Led+Zeppelin", "The+Beatles"];
 		for (var i = 0; i < artists.length; i++) {
-			console.log("artist searched is: " + artists[i]);
-			url2 = url+artistSyntax+songs+APIpart+"&name="+artists[i]+"&results=1"+"&start="+start;
-			console.log("url is: " + url2);
-			getURLTracks(url2, artists[i]);	
-			window.alert("top tracks for: " + artists[i] +"!");
-
+			(function () {
+				console.log("artist searched is: " + artists[i]);
+				url2 = url+artistSyntax+songs+APIpart+"&name="+artists[i]+"&results=1"+"&start="+start;
+				console.log("url is: " + url2);
+				getURLTracks(url2, artists[i]);	
+				window.alert("top tracks for: " + artists[i] +"!");
+			});
 		}
 		document.getElementById('artiste').value = "";
 	}
