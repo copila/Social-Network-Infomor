@@ -1,3 +1,5 @@
+// $(document).ready(function() {
+
 var userToken; 
 var friendMusic;
 var APIKEY = "UVTZMTHARGEDWUD3W";
@@ -17,7 +19,7 @@ var name;
 var hotnessArray1 = [];
 var friendMusicArray = [];
 
-var echonest = new Echonest("UVTZMTHARGEDWUD3W");
+// var echonest = new Echonest(APIKEY);
 
 
 (function(d, s, id){
@@ -198,32 +200,40 @@ function returnFriendMusic(friends){
   // takes in a json objects are your friends
   console.log("friends object in returnFriendMusic is: " + JSON.stringify(friends));
   var userFBRef = new Firebase("https://social-informor.firebaseio.com/"+name);
+  var friendIdsString = ''; 
   for (i = 0; i < friends.length; i++) { 
     //for eahc friend gets the friend id and name
     friendId = friends[i].id;
     friendName = friends[i].name;
-    console.log("friendId is: " + friendId);
-    console.log("friendName is:" + friendName);
-    // queries FB graphy API using the friend ID to get his or her music likes
-    FB.api(friendId+'?fields=music', 'get', function(response) {
-      console.log('music for ' + friendName + "is: " + JSON.stringify(response));
-      var friendMusic = response.music.data;
-      console.log("friend music: " + JSON.stringify(friendMusic));
-      friendMusicArray.push(friendMusic);
-      getHotness(friendMusic);
-      userFBRef.update({
-        friendName
-      });
-      userFBRef.child(friendName).update({
-          friendMusic
-      });
-    });    
+    if (friendIdsString != ''){
+      friendIdsString = friendIdsString + ","+friendId;
+    }
+    else if (friendIdsString === ''){
+      friendIdsString = friendId;
+    }
+    console.log("friendId is: " + friendId + " friendName is: " + friendName + " friendIdsString is: " + friendIdsString);
   }
+    // queries FB graphy API using the friend ID to get his or her music likes
+  FB.api('?ids='+friendIdsString+'?fields=music', 'get', function(response) {
+    console.log('music for all friends is: ' + JSON.stringify(response));
+    var friendMusic = response.music;
+      // console.log("friend music for" + friends[i].name + "is: " + JSON.stringify(friendMusic));
+      // friendMusicArray.push(JSON.stringify(friendMusic));
+      // getHotness(friendMusic);
+      // userFBRef.update({
+      //   friendName
+      // });
+      // userFBRef.child(friendName).update({
+      //     friendMusic
+      // });
+  });    
+  
   // getHotness(friendMusicArray);
   // userFBRef.update({
   //       friendMusicArray
   //     });
-  console.log("friendmusicArray in return Friend music is: " + JSON.stringify(friendMusicArray));
+  // console.log("friendmusicArray in return Friend music is: " + JSON.stringify(friendMusicArray));
+  // return friendMusicArray;
   
 }
 
@@ -231,8 +241,8 @@ function getHotness(friendsArtist){
   // console.log("gethotness called, friendMusic array is:  " + friendMusicArray);
   var userFBRef = new Firebase("https://social-informor.firebaseio.com/"+name);
   // for (i = 0; i < friendMusicArray.length; i++) {
-  console.log("friendMusicArray," + "for index " + i + "is: " + friendMusicArray[i]);
-  friendsArtist =friendMusicArray[i];
+  // console.log("friendMusicArray," + "for index " + i + "is: " + friendMusicArray[i]);
+  // friendsArtist =friendMusicArray[i];
   for (i = 0; i < friendsArtist.length; i++) { 
     var artist = friendsArtist[i].name;
     if (hasWhiteSpace(artist) === true ){
@@ -272,7 +282,7 @@ function getHotness(friendsArtist){
   userFBRef.update({
     artistHotness
   });
-  // http://developer.echonest.com/api/v4/artist/hotttnesss?api_key=FILDTEOIK2HBORODV&id=ARH6W4X1187B99274F&format=json
+  // https://developer.echonest.com/api/v4/artist/hotttnesss?api_key=FILDTEOIK2HBORODV&id=ARH6W4X1187B99274F&format=json
   displayHotness(artistHotness);
   //get top 10 songs from artistHotness array
   // getArtistSongs(artistHotness);
@@ -300,53 +310,49 @@ function displayHotness(array){
   }
 }
 
-function getArtistSongs(array){
-  //return top 10 songs, 1 of each artist in array
-  //query using artist id
-<<<<<<< HEAD
-  // for (i = 0; i < 10 ; i++) { 
-  //     var name = array[i].name;
-  //     var hotness_score = array[i].hotttnesss;
-  //     var artist_id = array[i].id;
-  // //     console.log("artist name is: " + name + " hotness score is: " + hotness_score);
-  // //     $( "#hot_artists" ).append( "<li>" + name + ": " + "score: " +hotness_score + "</li>" );
-  // }
-=======
-  var songs = [];
-  for (i = 0; i < 10 ; i++) { 
-      var name = array[i].name;
-      var hotness_score = array[i].hotttnesss;
-      var artist_id = array[i].id;
 
-      var artist_top_songs = [];
+// function getArtistSongs(array){
+//   //return top 10 songs, 1 of each artist in array
+//   //query using artist id
 
-      echonest.artist(name).images( function(imageCollection) {
-          $('body').prepend( imageCollection.to_html('<img src="${url}">') );
-      });
+//   // for (i = 0; i < 10 ; i++) { 
+//   //     var name = array[i].name;
+//   //     var hotness_score = array[i].hotttnesss;
+//   //     var artist_id = array[i].id;
+//   // //     console.log("artist name is: " + name + " hotness score is: " + hotness_score);
+//   // //     $( "#hot_artists" ).append( "<li>" + name + ": " + "score: " +hotness_score + "</li>" );
+//   // }
 
-      url2 = urlSpotify + "/v1/artists/" + artist_id + "/top-tracks" + "?country=US";
-      console.log("url is: " + url2);
-      $.get(url2, function(data, status){
-        console.log("data: " + JSON.stringify(data) + "\nStatus: " + status);
-        artist_top_songs.push(data);
-        if (data.response.tracks != undefined) {
-          var artistTrack = data.response.artist;
-           console.log("Top Songs for " + name + " are: " + JSON.stringify(artistsInfo));
-          artist_top_songs.push(artistTrack);
+//   var songs = [];
+//   for (i = 0; i < 10 ; i++) { 
+//       var name = array[i].name;
+//       var hotness_score = array[i].hotttnesss;
+//       var artist_id = array[i].id;
 
-        }
-        else {
-          console.log("NOOO response for this artist: ");
-        }
-        
-      });
+//       var artist_top_songs = [];
 
+//       echonest.artist(name).images( function(imageCollection) {
+//           $('body').prepend( imageCollection.to_html('<img src="${url}">') );
+//       });
 
-  //     console.log("artist name is: " + name + " hotness score is: " + hotness_score);
-  //     $( "#hot_artists" ).append( "<li>" + name + ": " + "score: " +hotness_score + "</li>" );
-  }
->>>>>>> f6f336c77f8ac76d5a0a2ac5f3e874caa8087f03
-}
+//       url2 = urlSpotify + "/v1/artists/" + artist_id + "/top-tracks" + "?country=US";
+//       console.log("url is: " + url2);
+//       $.get(url2, function(data, status){
+//         console.log("data: " + JSON.stringify(data) + "\nStatus: " + status);
+//         artist_top_songs.push(data);
+//         if (data.response.tracks != undefined) {
+//           var artistTrack = data.response.artist;
+//           console.log("Top Songs for " + name + " are: " + JSON.stringify(artistsInfo));
+//           artist_top_songs.push(artistTrack);
+//         }
+//         else {
+//           console.log("NOOO response for this artist: ");
+//         }      
+//       });
+//   //     console.log("artist name is: " + name + " hotness score is: " + hotness_score);
+//   //     $( "#hot_artists" ).append( "<li>" + name + ": " + "score: " +hotness_score + "</li>" );
+//   }
+// }
 
 function getTwitterHandles(array){
   //return twitter handles of top 10 hottest artists
@@ -391,6 +397,6 @@ function getTwitterHandles(array){
 //     }
 //   }
 // }
-
+// });
 
 

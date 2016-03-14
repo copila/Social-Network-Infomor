@@ -96,7 +96,7 @@
 		
 		// constants
 		this.constants = {
-			endPoint: "http://developer.echonest.com/api/",
+			endPoint: "https://developer.echonest.com/api/",
 			endPointVersion: 'v4',
 			format: 'jsonp'
 		};
