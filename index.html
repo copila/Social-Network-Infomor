@@ -115,25 +115,41 @@
           console.log("queryFireBase called!");
           window.alert("you queried firebase");
           var artistHotnessRef = new Firebase("https://social-informor.firebaseio.com/"+name+"/artistHotness");
-          // artistHotnessRef.on("value", function(snapshot) {
-          //   console.log(snapshot.val());
-          // }, function (errorObject) {
-          //   console.log("The read failed: " + errorObject.code);
-          // });
-          artistHotnessRef.orderByChild("hotttnesss").limitToLast(10).on("value", function(snapshot) {
+          var object = [];
+          artistHotnessRef.on("value", function(snapshot) {
             var object = snapshot.val();
-            // for (i = 0; object.length < 10 ; i++) { 
-            //   var artistName = object[i].name;
-            //   var hotness_score = object[i].hotttnesss;
-            //   console.log("artist name is: " + artistName + " hotness score is: " + hotness_score);
-            //   $( "#hot_artists" ).append( "<li>" + artistName + ": " + "score: " +hotness_score + "</li>" );
-            // }
-            console.log("artist is: " + object.0.name);
-            console.log("snapshot value is: ", JSON.stringify(object));
+            // snapshot.sort(function(b,a) {
+            //   return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
+            // });
+            object.sort(function(b,a) {
+              return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
+            });            
+            console.log("object after sorting is " + snapshot);
+            console.log("object after sorting is " + object);
+            console.log(JSON.stringify(object[0]));
+            console.log("object length is " + object.length);
+            for (i = 0; object.length < 10 ; i++) {
+              console.log (JSON.Stringify(object[i]);
+              var artistName = object[i].name;
+              var hotness_score = object[i].hotttnesss;
+              console.log("artist name is: " + artistName + " hotness score is: " + hotness_score);
+              $( "#hot_artists" ).append( "<li>" + artistName + ": " + "score: " +hotness_score + "</li>");
+            }
+            console.log(snapshot.val());
+          }, function (errorObject) {
+            console.log("The read failed: " + errorObject.code);
           });
-
-
-
+          // artistHotnessRef.orderByChild("hotttnesss").limitToLast(10).on("value", function(snapshot) {
+          //   var object = snapshot.val();
+          //   // for (i = 0; object.length < 10 ; i++) { 
+          //   //   var artistName = object[i].name;
+          //   //   var hotness_score = object[i].hotttnesss;
+          //   //   console.log("artist name is: " + artistName + " hotness score is: " + hotness_score);
+          //   //   $( "#hot_artists" ).append( "<li>" + artistName + ": " + "score: " +hotness_score + "</li>" );
+            // }
+          //   console.log("artist is: " + object.0.name);
+          //   console.log("snapshot value is: ", JSON.stringify(object));
+          // });
         }
 
         </script>
