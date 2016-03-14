@@ -146,7 +146,6 @@ function returnFriend(userToken, userId){
     // console.log("name in friend function is: " + name);
     // console.log('friends in friend function is:  ' + JSON.stringify(friends));
     console.log('data in friend function is:  ' + JSON.stringify(data));
-    returnFriendMusic(data);
     userFBRef.update({
       "Friends Music": data
     });
@@ -179,14 +178,6 @@ function returnMusic(userToken, userId){
      userFBRef.update({
       Music: music
     });
-    // for (i = 0; i < musicArr.length; i++) { 
-    //   artist = musicArr[i].name;
-    //   artistID = musicArr[i].id;
-    //   musicFBRef.push({
-    //     Artist: artist,
-    //     artistID : artistID
-    //   });
-    // }
    
     // var next = response.friends.paging.next;
     // console.log("paging.next is: " + next);
@@ -197,37 +188,37 @@ function returnMusic(userToken, userId){
 }
 
 
-function returnFriendMusic(friends){
-  // takes in a json objects are your friends
-  console.log("friends object in returnFriendMusic is: " + JSON.stringify(friends));
-  var userFBRef = new Firebase("https://social-informor.firebaseio.com/"+name);
-  var friendIdsString = ''; 
-  for (i = 0; i < friends.length; i++) { 
-    //for eahc friend gets the friend id and name
-    friendId = friends[i].id;
-    friendName = friends[i].name;
-    if (friendIdsString != ''){
-      friendIdsString = friendIdsString + ","+friendId;
-    }
-    else if (friendIdsString === ''){
-      friendIdsString = friendId;
-    }
-    console.log("friendId is: " + friendId + " friendName is: " + friendName + " friendIdsString is: " + friendIdsString);
-  }
-    // queries FB graphy API using the friend ID to get his or her music likes
-  FB.api('?ids='+friendIdsString+'?fields=music', 'get', function(response) {
-    console.log('music for all friends is: ' + JSON.stringify(response));
-    var friendMusic = response.music;
-      // console.log("friend music for" + friends[i].name + "is: " + JSON.stringify(friendMusic));
-      // friendMusicArray.push(JSON.stringify(friendMusic));
-      // getHotness(friendMusic);
-      // userFBRef.update({
-      //   friendName
-      // });
-      // userFBRef.child(friendName).update({
-      //     friendMusic
-      // });
-  });    
+// function returnFriendMusic(friends){
+//   // takes in a json objects are your friends
+//   console.log("friends object in returnFriendMusic is: " + JSON.stringify(friends));
+//   var userFBRef = new Firebase("https://social-informor.firebaseio.com/"+name);
+//   var friendIdsString = ''; 
+//   for (i = 0; i < friends.length; i++) { 
+//     //for eahc friend gets the friend id and name
+//     friendId = friends[i].id;
+//     friendName = friends[i].name;
+//     if (friendIdsString != ''){
+//       friendIdsString = friendIdsString + ","+friendId;
+//     }
+//     else if (friendIdsString === ''){
+//       friendIdsString = friendId;
+//     }
+//     console.log("friendId is: " + friendId + " friendName is: " + friendName + " friendIdsString is: " + friendIdsString);
+//   }
+//     // queries FB graphy API using the friend ID to get his or her music likes
+//   FB.api('?ids='+friendIdsString+'?fields=music', 'get', function(response) {
+//     console.log('music for all friends is: ' + JSON.stringify(response));
+//     var friendMusic = response.music;
+//       // console.log("friend music for" + friends[i].name + "is: " + JSON.stringify(friendMusic));
+//       // friendMusicArray.push(JSON.stringify(friendMusic));
+//       // getHotness(friendMusic);
+//       // userFBRef.update({
+//       //   friendName
+//       // });
+//       // userFBRef.child(friendName).update({
+//       //     friendMusic
+//       // });
+//   });    
   
   // getHotness(friendMusicArray);
   // userFBRef.update({
@@ -236,20 +227,20 @@ function returnFriendMusic(friends){
   // console.log("friendmusicArray in return Friend music is: " + JSON.stringify(friendMusicArray));
   // return friendMusicArray;
   
-}
+// }
 
 function getHotness(friendMusicArray){
   // console.log("gethotness called, friendMusic array is:  " + friendMusicArray);
   var userFBRef = new Firebase("https://social-informor.firebaseio.com/"+name);
   for (i = 0; i < friendMusicArray.length; i++) {
-    console.log("friendMusicArray," + "for index " + i + "is: " + JSON.stringify(friendMusicArray[i]));
+    // console.log("friendMusicArray," + "for index " + i + "is: " + JSON.stringify(friendMusicArray[i]));
     var friendsArtist =friendMusicArray[i].music.data[0].name;
-    console.log("friendsArtist in get hotness is" + friendsArtist);
+    // console.log("friendsArtist in get hotness is" + friendsArtist);
     for (x = 0; x < friendMusicArray[i].music.data.length; x++) { 
       var artist = friendMusicArray[i].music.data[x].name;
-      console.log("artist in nested for loop is: " + artist)
+      // console.log("artist in nested for loop is: " + artist)
       if (hasWhiteSpace(artist) === true ){
-        console.log("artist has whitespace " + artist);
+        // console.log("artist has whitespace " + artist);
         artist2 = artist.split(' ').join('+');
       }
       else{
@@ -261,28 +252,29 @@ function getHotness(friendMusicArray){
       $.get(url2, function(data, status){
         console.log("data get Hotness is: " + JSON.stringify(data) + "\nStatus: " + status);
         hotnessArray1.push(data);
-        if (data.response.artist != undefined) {
-          var artistsInfo = data.response.artist;
-          console.log("artistInfo is: " + JSON.stringify(artistsInfo));
-          artistHotness.push(artistsInfo);
-        }
-        else {
+        try{
+          if (data.response.artist != undefined) {
+            var artistsInfo = data.response.artist;
+            console.log("artistInfo is: " + JSON.stringify(artistsInfo));
+            artistHotness.push(JSON.stringify(artistsInfo));
+            console.log("artistHotness is: " + artistHotness);
+          }
+          else {
           console.log("NOOO response for this artist: ");
+          }
         }
-        
+        catch (error){
+          console.log(stringify(error));
+        }
       });
     //   console.log("artistHotness array is: " + artistHotness);
     }
   }
-  // userFBRef.update({
-  //   hotnessArray1
-  // }); 
-  // }
-  // }   
+ 
   artistHotness.sort(function(b,a) {
     return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
   });
-  console.log("artistHotness is getHotness is: " + artistHotness);
+  console.log("out of both for loops artistHotness is getHotness is: " + artistHotness);
   userFBRef.update({
     artistHotness
   });
