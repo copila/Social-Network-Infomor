@@ -3,7 +3,7 @@
 	var client_secret = "G7ICAMU4GXCKBZI7MYUBYTOL5NVR5JQCSSNYOFDUAWGANK6PPH";
 	var personal_oath_token = "FFG3EZYIB7NXA3ADTDK4";
 	var anon_oath_token = "VO2Y6GAPL3VUAEFOUGVVl";
-	var url = "https://www.eventbriteapi.com/v3/events/search/?q="
+	// var url = "https://www.eventbriteapi.com/v3/events/search/?q="
 	// event = "https://www.eventbriteapi.com/v3/events/search/?token="+anon_oath_token;
 	// https://www.eventbriteapi.com/v3/events/search/?token=VO2Y6GAPL3VUAEFOUGVVl
 	// https://www.eventbriteapi.com/v3/events/search/?q=adele&popular=on&categories=111&token=FFG3EZYIB7NXA3ADTDK4
