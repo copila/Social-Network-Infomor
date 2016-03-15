@@ -7,16 +7,15 @@
     <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
     <script src="scripts/scripts.js"> </script>  
     <script src = "scripts/echonest.js"> </script>
-
     <script src = "scripts/artists.js"> </script>
-
-    <script type="text/javascript" src="codebird.js"></script>
+    
+    <script type="text/javascript" src="codebird-js/codebird.js"></script>
 
     <script type="text/javascript">
     var cb = new Codebird;
     cb.setConsumerKey("GoNn1UWxIFJuAtRP0ab9jaW6F", "c9k8gQ69LwpHg6SWYJ7MohWKx5gPDpKOdkfu5nlEqGjma");
     </script>
-
+    <script src = "scripts/twitterAPI.js"> </script>
 
 
   </head>
@@ -76,6 +75,12 @@
             <input type="button" id="queryFB3" class="button btn btn-spotify" value="Top Artists">
             <input type="button" id="events"  value="Events">
 
+        </div>
+
+        <div id="twitter">
+            <input type="button" id="twitterAuth" class="button" value="Sign in with Twitter">
+            <input type="text" name="PIN" placeholder= "Enter PIN" id="PINFIELD">
+            <input type="button" id="submit" class="button" value="Submit"><br>
         </div>
 
         <div id = "hot_artists2">

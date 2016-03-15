@@ -54,3 +54,28 @@ h1 {
 ol {
 	text-align: left;
 }
+
+li {
+	margin: 	15px;
+	border: 	1px dashed black;
+	/*min-height: 100px;*/
+	/*vertical-align: center;*/
+}
+
+li .song {
+	font-size: 		24pt;
+	text-transform: uppercase;
+	padding: 		5px;
+	padding-top:  	10px;
+}
+
+li .artist {
+	font-size:  	20pt;
+	padding: 		5px;
+}
+
+li img {
+	float:  		right;
+	max-height:  	80px;
+	margin: 		inherit;
+}
