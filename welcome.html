@@ -11,10 +11,10 @@
     
     <script type="text/javascript" src="codebird-js/codebird.js"></script>
 
-    <script type="text/javascript">
+   <!--  <script type="text/javascript">
     var cb = new Codebird;
     cb.setConsumerKey("GoNn1UWxIFJuAtRP0ab9jaW6F", "c9k8gQ69LwpHg6SWYJ7MohWKx5gPDpKOdkfu5nlEqGjma");
-    </script>
+    </script> -->
     <script src = "scripts/twitterAPI.js"> </script>
 
 
@@ -78,7 +78,7 @@
         </div>
 
         <div id="twitter">
-            <input type="button" id="twitterAuth" class="button" value="Sign in with Twitter">
+            <input type="button" id="twitterAuth" class="button" value="Sign in with Twitter" onclick = "authTwitter()">
             <input type="text" name="PIN" placeholder= "Enter PIN" id="PINFIELD">
             <input type="button" id="submit" class="button" value="Submit"><br>
         </div>

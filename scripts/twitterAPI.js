@@ -1,4 +1,7 @@
-$('#twitterAuth').on('click', authTwitter);
+// $('#twitterAuth').on('click', authTwitter);
+
+var cb = new Codebird;
+cb.setConsumerKey("Xy0iOHRXi8GFPajsVJj0waIQB", "Hd8I5EOyq5yI9diPLNLT7cfB3QZ2fAw2UY1mWqIBn9kJQHTDp6");
 
 function authTwitter(){
   cb.__call(
@@ -29,5 +32,5 @@ function authTwitter(){
         // if you need to persist the login after page reload, 
         // consider storing the token in a cookie or HTML5 local storage 
     }
-);
+  );
 }
