@@ -9,7 +9,7 @@
     <script src = "scripts/echonest.js"> </script>
     <script src = "scripts/artists.js"> </script>
     
-    <script type="text/javascript" src="codebird-js/codebird.js"></script>
+    <script type="text/javascript" src="scripts/node_modules/codebird/codebird.js"></script>
 
    <!--  <script type="text/javascript">
     var cb = new Codebird;
@@ -80,7 +80,7 @@
         <div id="twitter">
             <input type="button" id="twitterAuth" class="button" value="Sign in with Twitter" onclick = "authTwitter()">
             <input type="text" name="PIN" placeholder= "Enter PIN" id="PINFIELD">
-            <input type="button" id="submit" class="button" value="Submit"><br>
+            <input type="button" id="submit" class="button" value="Submit" onclick = "getTwitterAccessToken()"><br>
         </div>
 
         <div id = "hot_artists2">
