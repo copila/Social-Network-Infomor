@@ -335,6 +335,7 @@ function queryFireBase(){
     var tracker = 0;
     var artistName = '';
     var hotness_score;
+    $( "#hot_artists" ).empty();
     i = 0;
     while (tracker < 10){
       if (i > 0) {
@@ -395,7 +396,6 @@ function returnTweets(){
 window.onload = function () {
   document.getElementById("queryFB4").onclick = queryFireBase;
   document.getElementById("get_twitter_handles").onclick = getTwitterHandles;
-    
 };
 
 
