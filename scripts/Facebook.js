@@ -252,7 +252,7 @@ function getHotness(friendMusicArray){
               console.log("artistInfo is: " + JSON.stringify(artistInfo));
               console.log("artistInfo length is: " + artistsInfo.length);
               // userFBRef.update({
-              //   artistsInfo
+              //   artistInfo
               // });
             }
             else {
@@ -264,10 +264,10 @@ function getHotness(friendMusicArray){
           }
           finally {
             console.log("in finally portion");
-            console.log("data objects number " + counterDataObject);
             artistInfo.push(data.response.artist);
+            console.log("data objects number " + counterDataObject);
             console.log("artistInfo is: " + JSON.stringify(artistInfo));
-            console.log("artistInfo length is: " + artistsInfo.length);
+            console.log("artistInfo length is: " + artistInfo.length);
             userFBRef.update({
               artistInfo
             });
@@ -280,9 +280,13 @@ function getHotness(friendMusicArray){
       console.log("there was en error");
     }
   }
-  artistHotness.sort(function(b,a) {
+  artistInfo.sort(function(b,a) {
     return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
   });
+  console.log("artistInfo length out of both for loops is: " + artistInfo.length);
+  // userFBRef.update({
+  //   artistInfo
+  // });
   // console.log("out of both for loops artistInfo in getHotness is: " + artistInfo);
   // userFBRef.update({
   //   artistInfo
@@ -314,16 +318,34 @@ function sortHotness(hotnessArray){
 
 
 
+// function queryFireBase(){
+//   console.log("queryFireBase called!");
+//   window.alert("you queried firebase");
+//   var artistInfoRef = new Firebase("https://social-informor.firebaseio.com/"+name+"/artistInfo");
+//   artistInfoRef.on("value", function(snapshot) {
+//     object = snapshot.val();
+//     // snapshot.sort(function(b,a) {
+//     //   return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
+//     // });
+//     object.sort(function(b,a) {
+//       return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
+//     });            
+//     // console.log("object after sorting is " + snapshot);
+//     // console.log("object after sorting is " + object);
+//     // console.log(JSON.stringify(object[0]));
+//     // console.log(JSON.stringify(object[1]));
+//     // console.log("object length is " + object.length);
+//     displayFireBaseResults(object);
+//     console.log(snapshot.val());
+//   }, function (errorObject) {
+//     console.log("The read failed: " + errorObject.code);
+//   });      
+// }
+
 function queryFireBase(){
   console.log("queryFireBase called!");
-  window.alert("you queried firebase");
-  var artistInfoRef = new Firebase("https://social-informor.firebaseio.com/"+name+"/artistInfo");
-  artistInfoRef.on("value", function(snapshot) {
-    object = snapshot.val();
-    // snapshot.sort(function(b,a) {
-    //   return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
-    // });
-    object.sort(function(b,a) {
+  window.alert("return artists");
+  artistsInfo.sort(function(b,a) {
       return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
     });            
     // console.log("object after sorting is " + snapshot);
@@ -331,11 +353,7 @@ function queryFireBase(){
     // console.log(JSON.stringify(object[0]));
     // console.log(JSON.stringify(object[1]));
     // console.log("object length is " + object.length);
-    displayFireBaseResults(object);
-    console.log(snapshot.val());
-  }, function (errorObject) {
-    console.log("The read failed: " + errorObject.code);
-  });      
+    displayFireBaseResults(artistInfo);
 }
 
   function displayFireBaseResults(array){
