@@ -91,7 +91,7 @@ function displayEvents(){
   	});
 	for (var x = 0; x < eventInfo.length; x++){
       	console.log("artist name is: " + eventInfo[x].artist + " score is: " + eventInfo[x].score);
-      	$( "#artist_ events" ).append( "<li>" + eventInfo[x].artist+ ": " + "title: " + eventInfo[x].title + "score: " + eventInfo[x].score + " announced_date: " + eventInfo[x].announced_date + "</li>" );
+      	$( "#artist_events" ).append( "<li>" + eventInfo[x].artist+ ": " + "title: " + eventInfo[x].title + "score: " + eventInfo[x].score + " announced_date: " + eventInfo[x].announced_date + "</li>" );
 	}
 }
 

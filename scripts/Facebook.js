@@ -25,11 +25,11 @@ var topTenArtists = [];
 var twitterHandles = [];
 var dict = { };
 var counterDataObject = 0; 
+var restOfSGUrl = "&client_id=NDM1ODIxMnwxNDU4MTA3MDY3&client_secret=dE4BXwM7ph1gl22YPPm2IQJqDOmr4c5qes0Cv-Lt"
+var seatgeekURL = "https://api.seatgeek.com/2/events?performers.slug="
+var eventInfo = [];
 
-// $(document).ready(function() {
-//   $('#queryFB4').on('click', queryFireBase);
-//   $('.queryFB5').on('click', queryFireBase);
-// });
+
 // var echonest = new Echonest(APIKEY);
 
 
@@ -200,53 +200,48 @@ function returnMusic(userToken, userId){
 
 
 function getHotness(friendMusicArray){
-  console.log("get hotness called")
   // console.log("gethotness called, friendMusic array is:  " + friendMusicArray);
   var userFBRef = new Firebase("https://social-informor.firebaseio.com/"+name);
   for (i = 0; i < friendMusicArray.length; i++) {
     // console.log("friendMusicArray," + "for index " + i + "is: " + JSON.stringify(friendMusicArray[i]));
     // var friendsArtist =friendMusicArray[i].music.data[0].name;
     // console.log("friendsArtist in get hotness is" + friendsArtist);
-    console.log("in outer for loop of get hotness");
     try{
       for (x = 0; x < friendMusicArray[i].music.data.length; x++) { 
-        console.log("in inner for loop for get hotness");
         var artist = friendMusicArray[i].music.data[x].name;
-        var artistClean = friendMusicArray[i].music.data[x].name;
+        var cleanedArtist = friendMusicArray[i].music.data[x].name;
+        if ( dict.hasOwnProperty(cleanedArtist) ){
+            count = dict[cleanedArtist];
+            countNew = count +1;
+            dict[cleanedArtist] = countNew;
+          }
+        else {
+            dict[cleanedArtist] = 1;
+        } 
+        console.log("dict is : " + JSON.stringify(dict));
         // console.log("artist in nested for loop is: " + artist)
         if (hasWhiteSpace(artist) === true ){
           // console.log("artist has whitespace " + artist);
           artist2 = artist.split(' ').join('+');
+          
         }
         else{
           artist2 = artist;
         }
-        if ( dict.hasOwnProperty(artistClean) ){
-          currCount = dict[artistClean];
-          nextCount = currCount+1;
-          dict[artistClean] = nextCount;
-        }
-        else {
-          dict[artistClean] = 1;
-        }
-        // console.log("dictIs: " + JSON.stringify(dict));
         // console.log("artist name in getHotness is: " + artist2);
         // "https://developer.echonest.com/api/v4/artist/profile?api_key=FILDTEOIK2HBORODV&name=weezer&bucket=hotttnesss&bucket=familiarity&bucket=terms"
         // url2 = url+artistSyntax+hotness+APIpart+"&name="+artist2+"&format=json";
         url2 = url+artistSyntax+"profile?"+APIpart+"&name="+artist2+"&bucket=hotttnesss&bucket=images&bucket=artist_location&bucket=songs&format=json";
-        // console.log("url2 is " + url2);
+        console.log("url2 is " + url2);
         // url2 = url+artistSyntax+hotness+APIpart+"&name="+artist2+"&format=json";
         // console.log("url is: " + url2);
-        counterDataObject +=1;
         $.get(url2, function(data, status){
-          // console.log("data get Hotness is: " + JSON.stringify(data) + "\nStatus: " + status);
+          console.log("data get Hotness is: " + JSON.stringify(data) + "\nStatus: " + status);
           // hotnessArray1.push(data);
           try{
             if (data.response.artist != undefined) {
               var artistResponse = data.response.artist;
-              counterDataObject += artistResonse.length;
-              console.log("data objects number " + counterDataObject);
-              // console.log("artistInfo is: " + JSON.stringify(artistInfo));
+              // console.log("artistInfo is: " + JSON.stringify(artistsInfo));
               artistInfo.push(artistResponse);
               // userFBRef.update({
               //   artistsInfo
@@ -257,11 +252,10 @@ function getHotness(friendMusicArray){
             }
           }
           catch (error){
-            console.log("error thrown");
+            console.log(stringify(error));
           }
           finally {
             console.log("in finally portion");
-            console.log("data objects number " + counterDataObject);
             userFBRef.update({
               artistInfo
             });
@@ -271,29 +265,24 @@ function getHotness(friendMusicArray){
       }
     }
     catch(errorObject){
-      console.log("there was en error");
+      console.log("no music data for that friend" + errorObject);
     }
   }
   artistHotness.sort(function(b,a) {
     return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
   });
-  // console.log("out of both for loops artistInfo in getHotness is: " + artistInfo);
+  console.log("out of both for loops artistInfo in getHotness is: " + artistInfo);
   userFBRef.update({
     artistInfo
   });
   // // https://developer.echonest.com/api/v4/artist/hotttnesss?api_key=FILDTEOIK2HBORODV&id=ARH6W4X1187B99274F&format=json
-
+  displayHotness(artistInfo);
   //get top 10 songs from artistHotness array
   // getArtistSongs(artistHotness);
   // //get twitter handles of top 10 hottest artists
   // getTwitterHandles(artistHotness);
-  // console.log("artist info length after all loops is " + artistsInfo.length);
-  // console.log("dict after all loops is" + JSON.stringify(dict));
-  userFBRef.update({
-    dict
-  });
-
 }
+
 
 function hasWhiteSpace(s) {
   return s.indexOf(' ') >= 0;
@@ -321,16 +310,18 @@ function queryFireBase(){
       return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
     });            
     // console.log("object after sorting is " + snapshot);
-    // console.log("object after sorting is " + object);
-    // console.log(JSON.stringify(object[0]));
-    // console.log(JSON.stringify(object[1]));
-    // console.log("object length is " + object.length);
+    console.log("object after sorting is " + object);
+    console.log(JSON.stringify(object[0]));
+    console.log(JSON.stringify(object[1]));
+    console.log("object length is " + object.length);
     displayFireBaseResults(object);
     console.log(snapshot.val());
   }, function (errorObject) {
     console.log("The read failed: " + errorObject.code);
   });      
 }
+
+
 
   function displayFireBaseResults(array){
     console.log("display FireBase Results function called");
@@ -357,15 +348,17 @@ function queryFireBase(){
             count  =  "no";
           } 
           hotness_score = array[i].hotttnesss;
-          song = array[i].songs[0].title; 
+          if ( array[i].songs[0].title != undefined){
+            song = array[i].songs[0].title;
+          } 
           if (array[i].images[0].url != undefined) { imgURL = array[i].images[0].url; }
           console.log("artist name is: " + artistName + " hotness score is: " + hotness_score + " top song: " + song);
           $( "#hot_artists" ).append( "<li><div><div class = 'song'>" + song + "</div>"
-                                    + "<div class = 'artist'>" + artistName + ": score: " +hotness_score +"</div>"
+                                    + "<div class = 'artist'>" + artistName + ": score: " +hotness_score + " listened by " + count + " friends"+"</div>"
                                     + "<img src = '" + imgURL + "'></div></li>" );
 
           topTenArtists.push(array[i]);
-          console.log("topTenArtists array in displayFireBaseResults is : " + topTenArtists);
+          console.log("topTenArtists array in displayFireBaseResults is : " + topTenArtists.l);
         }
       }
       else {
@@ -379,38 +372,100 @@ function queryFireBase(){
             count  =  "no";
         } 
         hotness_score = array[i].hotttnesss;
-        song = array[i].songs[0].title;
+        if ( array[i].songs[0].title != undefined){
+          song = array[i].songs[0].title;
+        }
         if (array[i].images[0].url != undefined) { imgURL = array[i].images[0].url; }
         console.log("artist name is: " + artistName + " hotness score is: " + hotness_score + " top song: " + song);
         $( "#hot_artists" ).append( "<li><div><div class = 'song'>" + song + "</div>"
-                                    + "<div class = 'artist'>" + artistName + ": score: " +hotness_score +"</div>"
+                                    + "<div class = 'artist'>" + artistName + ": score: " +hotness_score + " listened by " + count + " friends"+ "</div>"
                                     + "<img src = '" + imgURL + "'></div></li>" );
       }
       i += 1;
     }
+    // getEvents(topTenArtists);
   }
 
-  function getTwitterHandles() {
-    console.log("get twitter Handles Button clicked");
-    window.alert("get twitterHandles clicked");
-    console.log("top ten artists array is: " + topTenArtists);
-    //return twitter handles of top 10 hottest artists
-  //query using aritst id
-  // url = "https://developer.echonest.com/api/v4/artist/twitter?api_key=UVTZMTHARGEDWUD3W&id=ARH6W4X1187B99274F&format=json"
-  // url2 = url+artistSyntax+hotness+APIpart+"&name="+artist2+"&format=json";
-    for (i = 0; i < topTenArtists.length ; i++) { 
-      var id = topTenArtists[i].id;
-      url2 = url+artistSyntax+"twitter?"+APIpart+"&id="+id+"&format=json";
-      $.get(url2, function(data, status){
-        // console.log("data get Hotness is: " + JSON.stringify(data) + "\nStatus: " + status);
-        console.log("twitter handle data is: " + JSON.stringify(data.response.artist));
-        twitterHandles.push(data.response.artist);
-      // console.log("artist name is: " + name + " hotness score is: " + hotness_score);
-      // $( "#hot_artists" ).append( "<li>" + name + ": " + "score: " +hotness_score + "</li>" );
-      });
+
+function getEvents(){
+    console.log("get events Button Clicked, topTenArtist length is" + topTenArtists.length );
+    window.alert("get events Button Clicked");
+    for (var i = 0; i < 10; i++) {
+      if (hasWhiteSpace(object[i].name)=== true) {
+        artist = object[i].name.split(' ').join('-');
+        artist = artist.toLowerCase();
+          }
+          else{
+            artist = object[i].name;
+            artist = artist.toLowerCase();
+          }
+      url3 = seatgeekURL+artist+restOfSGUrl;
+      console.log(url3);
+      $.get(url3, function(data, status){
+            // console.log("Data: " + JSON.stringify(data) + "\nStatus: " + status);
+            var events = data.events;
+            for (var x = 0; x < events.length; x++){
+
+              try{
+                var title = data.events[x].title;
+                var announce_date = data.events[x].announce_date;
+                var score = data.events[x].score;
+                var location = data.events[x].location;
+                var object = { artist: artist, title:title, announced_date: announce_date, score:score, location:location };
+                console.log("object is: " + JSON.stringify(object));
+                eventInfo.push(object);
+                console.log(eventInfo.length);
+
+              }
+              catch(error){
+                console.log("caught an error");
+
+              }
+              finally{
+                console.log("in the finall section");
+
+              }
+            }
+            
+            console.log("first evnet is " + title + " announced on: " + announce_date + " scored at " + score);
+
+          // formatResults(data);
+        });
     }
-    console.log("twitterHandled data is " + twitterHandles);
   }
+
+function displayEvents (){
+  eventInfo.sort(function(b,a) {
+    return parseFloat(a.score) - parseFloat(b.score);
+    });
+  for (var x = 0; x < eventInfo.length; x++){
+        console.log(" artist name is: " + eventInfo[x].artist + " score is: " + eventInfo[x].score + " title: " + eventInfo[x].title + " announced_date: " + eventInfo[x].announced_date);
+        $( "#events_div" ).append( "<li>" + eventInfo[x].artist+ ": " + " title: " + eventInfo[x].title + "score: " + eventInfo[x].score + " announced_date: " + eventInfo[x].announced_date + "</li>" );
+  }
+
+}
+
+  // function getTwitterHandles() {
+  //   console.log("get twitter Handles Button clicked");
+  //   window.alert("get twitterHandles clicked");
+  //   console.log("top ten artists array is: " + topTenArtists);
+  //   //return twitter handles of top 10 hottest artists
+  // //query using aritst id
+  // // url = "https://developer.echonest.com/api/v4/artist/twitter?api_key=UVTZMTHARGEDWUD3W&id=ARH6W4X1187B99274F&format=json"
+  // // url2 = url+artistSyntax+hotness+APIpart+"&name="+artist2+"&format=json";
+  //   for (i = 0; i < topTenArtists.length ; i++) { 
+  //     var id = topTenArtists[i].id;
+  //     url2 = url+artistSyntax+"twitter?"+APIpart+"&id="+id+"&format=json";
+  //     $.get(url2, function(data, status){
+  //       // console.log("data get Hotness is: " + JSON.stringify(data) + "\nStatus: " + status);
+  //       console.log("twitter handle data is: " + JSON.stringify(data.response.artist));
+  //       twitterHandles.push(data.response.artist);
+  //     // console.log("artist name is: " + name + " hotness score is: " + hotness_score);
+  //     // $( "#hot_artists" ).append( "<li>" + name + ": " + "score: " +hotness_score + "</li>" );
+  //     });
+  //   }
+  //   console.log("twitterHandled data is " + twitterHandles);
+  // }
 
 function returnTweets(){
   var twitter_url = "https://api.twitter.com/1.1/search/tweets.json?q=from%3AZedd&src=typd"
@@ -419,42 +474,7 @@ function returnTweets(){
 
 window.onload = function () {
   document.getElementById("queryFB4").onclick = queryFireBase;
-  document.getElementById("get_twitter_handles").onclick = getTwitterHandles;
+  document.getElementById("display_events").onclick = getEvents;
+  // document.getElementById("get_twitter_handles").onclick = getTwitterHandles;
 };
 
-
-function getArtistSongs(array){
-  var songs = [];
-  for (i = 0; i < 10 ; i++) { 
-      var name = array[i].name;
-      var hotness_score = array[i].hotttnesss;
-      var artist_id = array[i].id;
-
-      var artist_top_songs = [];
-
-      echonest.artist(name).images( function(imageCollection) {
-          $('body').prepend( imageCollection.to_html('<img src="${url}">') );
-      });
-
-      url2 = urlSpotify + "/v1/artists/" + artist_id + "/top-tracks" + "?country=US";
-      console.log("url is: " + url2);
-      $.get(url2, function(data, status){
-        console.log("data: " + JSON.stringify(data) + "\nStatus: " + status);
-        artist_top_songs.push(data);
-        if (data.response.tracks != undefined) {
-          var artistTrack = data.response.artist;
-           console.log("Top Songs for " + name + " are: " + JSON.stringify(artistsInfo));
-          artist_top_songs.push(artistTrack);
-
-        }
-        else {
-          console.log("NOOO response for this artist: ");
-        }
-        
-      });
-
-
-  //     console.log("artist name is: " + name + " hotness score is: " + hotness_score);
-  //     $( "#hot_artists" ).append( "<li>" + name + ": " + "score: " +hotness_score + "</li>" );
-  }
-}
