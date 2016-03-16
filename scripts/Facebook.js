@@ -200,19 +200,15 @@ function returnMusic(userToken, userId){
 
 
 function getHotness(friendMusicArray){
-  console.log("get hotness called")
   // console.log("gethotness called, friendMusic array is:  " + friendMusicArray);
   var userFBRef = new Firebase("https://social-informor.firebaseio.com/"+name);
   for (i = 0; i < friendMusicArray.length; i++) {
     // console.log("friendMusicArray," + "for index " + i + "is: " + JSON.stringify(friendMusicArray[i]));
     // var friendsArtist =friendMusicArray[i].music.data[0].name;
     // console.log("friendsArtist in get hotness is" + friendsArtist);
-    console.log("in outer for loop of get hotness");
     try{
       for (x = 0; x < friendMusicArray[i].music.data.length; x++) { 
-        console.log("in inner for loop for get hotness");
         var artist = friendMusicArray[i].music.data[x].name;
-        var artistClean = friendMusicArray[i].music.data[x].name;
         // console.log("artist in nested for loop is: " + artist)
         if (hasWhiteSpace(artist) === true ){
           // console.log("artist has whitespace " + artist);
@@ -221,15 +217,6 @@ function getHotness(friendMusicArray){
         else{
           artist2 = artist;
         }
-        if ( dict.hasOwnProperty(artistClean) ){
-          currCount = dict[artistClean];
-          nextCount = currCount+1;
-          dict[artistClean] = nextCount;
-        }
-        else {
-          dict[artistClean] = 1;
-        }
-        // console.log("dictIs: " + JSON.stringify(dict));
         // console.log("artist name in getHotness is: " + artist2);
         // "https://developer.echonest.com/api/v4/artist/profile?api_key=FILDTEOIK2HBORODV&name=weezer&bucket=hotttnesss&bucket=familiarity&bucket=terms"
         // url2 = url+artistSyntax+hotness+APIpart+"&name="+artist2+"&format=json";
@@ -237,22 +224,16 @@ function getHotness(friendMusicArray){
         console.log("url2 is " + url2);
         // url2 = url+artistSyntax+hotness+APIpart+"&name="+artist2+"&format=json";
         // console.log("url is: " + url2);
-        counterDataObject +=1;
         $.get(url2, function(data, status){
-          // console.log("data get Hotness is: " + JSON.stringify(data) + "\nStatus: " + status);
+          console.log("data get Hotness is: " + JSON.stringify(data) + "\nStatus: " + status);
           // hotnessArray1.push(data);
           try{
             if (data.response.artist != undefined) {
               var artistResponse = data.response.artist;
-              console.log("artistResponse is" + JSON.stringify(artistResponse));
-              console.log()
-              counterDataObject += artistResonse.length;
-              console.log("data objects number " + counterDataObject);
-              artistInfo.push(data.response.artist);
-              console.log("artistInfo is: " + JSON.stringify(artistInfo));
-              console.log("artistInfo length is: " + artistsInfo.length);
+              // console.log("artistInfo is: " + JSON.stringify(artistsInfo));
+              artistInfo.push(artistResponse);
               // userFBRef.update({
-              //   artistInfo
+              //   artistsInfo
               // });
             }
             else {
@@ -260,14 +241,10 @@ function getHotness(friendMusicArray){
             }
           }
           catch (error){
-            console.log("error thrown");
+            console.log(stringify(error));
           }
           finally {
             console.log("in finally portion");
-            artistInfo.push(data.response.artist);
-            console.log("data objects number " + counterDataObject);
-            console.log("artistInfo is: " + JSON.stringify(artistInfo));
-            console.log("artistInfo length is: " + artistInfo.length);
             userFBRef.update({
               artistInfo
             });
@@ -277,33 +254,24 @@ function getHotness(friendMusicArray){
       }
     }
     catch(errorObject){
-      console.log("there was en error");
+      console.log("no music data for that friend" + errorObject);
     }
   }
-  artistInfo.sort(function(b,a) {
+  artistHotness.sort(function(b,a) {
     return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
   });
-  console.log("artistInfo length out of both for loops is: " + artistInfo.length);
-  // userFBRef.update({
-  //   artistInfo
-  // });
-  // console.log("out of both for loops artistInfo in getHotness is: " + artistInfo);
-  // userFBRef.update({
-  //   artistInfo
-  // });
+  console.log("out of both for loops artistInfo in getHotness is: " + artistInfo);
+  userFBRef.update({
+    artistInfo
+  });
   // // https://developer.echonest.com/api/v4/artist/hotttnesss?api_key=FILDTEOIK2HBORODV&id=ARH6W4X1187B99274F&format=json
-
+  displayHotness(artistInfo);
   //get top 10 songs from artistHotness array
   // getArtistSongs(artistHotness);
   // //get twitter handles of top 10 hottest artists
   // getTwitterHandles(artistHotness);
-  // console.log("artist info length after all loops is " + artistsInfo.length);
-  // console.log("dict after all loops is" + JSON.stringify(dict));
-  // userFBRef.update({
-  //   dict
-  // });
-
 }
+
 
 function hasWhiteSpace(s) {
   return s.indexOf(' ') >= 0;
@@ -318,43 +286,31 @@ function sortHotness(hotnessArray){
 
 
 
-// function queryFireBase(){
-//   console.log("queryFireBase called!");
-//   window.alert("you queried firebase");
-//   var artistInfoRef = new Firebase("https://social-informor.firebaseio.com/"+name+"/artistInfo");
-//   artistInfoRef.on("value", function(snapshot) {
-//     object = snapshot.val();
-//     // snapshot.sort(function(b,a) {
-//     //   return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
-//     // });
-//     object.sort(function(b,a) {
-//       return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
-//     });            
-//     // console.log("object after sorting is " + snapshot);
-//     // console.log("object after sorting is " + object);
-//     // console.log(JSON.stringify(object[0]));
-//     // console.log(JSON.stringify(object[1]));
-//     // console.log("object length is " + object.length);
-//     displayFireBaseResults(object);
-//     console.log(snapshot.val());
-//   }, function (errorObject) {
-//     console.log("The read failed: " + errorObject.code);
-//   });      
-// }
-
 function queryFireBase(){
   console.log("queryFireBase called!");
-  window.alert("return artists");
-  artistsInfo.sort(function(b,a) {
+  window.alert("you queried firebase");
+  var artistInfoRef = new Firebase("https://social-informor.firebaseio.com/"+name+"/artistInfo");
+  artistInfoRef.on("value", function(snapshot) {
+    object = snapshot.val();
+    // snapshot.sort(function(b,a) {
+    //   return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
+    // });
+    object.sort(function(b,a) {
       return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
     });            
     // console.log("object after sorting is " + snapshot);
-    // console.log("object after sorting is " + object);
-    // console.log(JSON.stringify(object[0]));
-    // console.log(JSON.stringify(object[1]));
-    // console.log("object length is " + object.length);
-    displayFireBaseResults(artistInfo);
+    console.log("object after sorting is " + object);
+    console.log(JSON.stringify(object[0]));
+    console.log(JSON.stringify(object[1]));
+    console.log("object length is " + object.length);
+    displayFireBaseResults(object);
+    console.log(snapshot.val());
+  }, function (errorObject) {
+    console.log("The read failed: " + errorObject.code);
+  });      
 }
+
+
 
   function displayFireBaseResults(array){
     console.log("display FireBase Results function called");
