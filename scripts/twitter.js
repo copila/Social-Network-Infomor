@@ -20,21 +20,22 @@ function twitterAuth() {
 
 	ref.authWithOAuthPopup("twitter", function(error, authData) {
 		if (error) {
-		    console.log("Login Failed!", error);
+		    window.alert("Login Failed!", error);
 		} else {
-		    console.log("Authenticated successfully with payload:", authData);
+		    window.alert("Authenticated successfully with payload:", authData);
 		}
 	});
 }
 
 function getTweets() {
 	window.alert("you tried retrieving tweets");
-	
+
 	var url2 = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=informor&count=2";
 	getURL(url2);
 }
 
 function getURL(url2){	
+	window.alert("URL: " + url2);
 
 	$.get(url2, function(data, status){
     console.log("Data: " + JSON.stringify(data) + "\nStatus: " + status);
