@@ -24,6 +24,7 @@ var object = [];
 var topTenArtists = [];
 var twitterHandles = [];
 var dict = { };
+var countDataObjects; 
 
 // $(document).ready(function() {
 //   $('#queryFB4').on('click', queryFireBase);
@@ -156,6 +157,8 @@ function returnFriend(userToken, userId){
     // var name = response.name;
     var friends = response.friends;
     var data = response.friends.data;
+    counterDataObject += data.length;
+    console.log("data objects number " + counterDataObject);
     // console.log("name in friend function is: " + name);
     // console.log('friends in friend function is:  ' + JSON.stringify(friends));
     console.log('data in friend function is:  ' + JSON.stringify(data));
@@ -188,6 +191,8 @@ function returnMusic(userToken, userId){
     // console.log('music in music function is:  ' + JSON.stringify(music));
     // console.log('data in music function is:  ' + JSON.stringify(response));
     var musicArr = response.music.data;
+    counterDataObject += musicArr.length;
+    console.log("data objects number " + counterDataObject);
     //saves this music as a json object to Firebase
      userFBRef.update({
       Music: music
@@ -241,12 +246,15 @@ function getHotness(friendMusicArray){
         // console.log("url2 is " + url2);
         // url2 = url+artistSyntax+hotness+APIpart+"&name="+artist2+"&format=json";
         // console.log("url is: " + url2);
+        counterDataObject +=1;
         $.get(url2, function(data, status){
           // console.log("data get Hotness is: " + JSON.stringify(data) + "\nStatus: " + status);
           // hotnessArray1.push(data);
           try{
             if (data.response.artist != undefined) {
               var artistResponse = data.response.artist;
+              counterDataObject += artistResonse.length;
+              console.log("data objects number " + counterDataObject);
               // console.log("artistInfo is: " + JSON.stringify(artistInfo));
               artistInfo.push(artistResponse);
               // userFBRef.update({

@@ -23,6 +23,8 @@
 	var jamBaseURLArtistID = "https://api.jambase.com/"
 	// http://api.jambase.com/events?artistId=52303&page=0&api_key=zq6j5ydsaezxw8faf5fh6qvr
 	// http://api.jambase.com/artists?name=Calvin+harris&page=0&api_key=zq6j5ydsaezxw8faf5fh6qvr
+	var gigAPIKey = "b3458f6944d5c8d8ec7e6a01348345ca";
+
 
 
 	function getEvents(){
