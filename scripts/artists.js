@@ -1,21 +1,29 @@
 
-	var api_key = "OZXHNDSPPIQZC6KRMG";
-	var client_secret = "G7ICAMU4GXCKBZI7MYUBYTOL5NVR5JQCSSNYOFDUAWGANK6PPH";
-	var personal_oath_token = "FFG3EZYIB7NXA3ADTDK4";
-	var anon_oath_token = "VO2Y6GAPL3VUAEFOUGVVl";
+	// var api_key = "OZXHNDSPPIQZC6KRMG";
+	// var client_secret = "G7ICAMU4GXCKBZI7MYUBYTOL5NVR5JQCSSNYOFDUAWGANK6PPH";
+	// var personal_oath_token = "FFG3EZYIB7NXA3ADTDK4";
+	// var anon_oath_token = "VO2Y6GAPL3VUAEFOUGVVl";
 	// var url = "https://www.eventbriteapi.com/v3/events/search/?q="
 	// event = "https://www.eventbriteapi.com/v3/events/search/?token="+anon_oath_token;
 	// https://www.eventbriteapi.com/v3/events/search/?token=VO2Y6GAPL3VUAEFOUGVVl
 	// https://www.eventbriteapi.com/v3/events/search/?q=adele&popular=on&categories=111&token=FFG3EZYIB7NXA3ADTDK4
-	
-	var cat = "&categories=111"
-	var popular = "&popular=on"
-	var token_syntax= "&token="
+		// http://api.bandsintown.com/artists/Skrillex/events.json?app_id=YOUR_APP_ID
+	// var cat = "&categories=111"
+	// var popular = "&popular=on"
+	// var token_syntax= "&token="
 	var array =["Coldplay", "Taylor Swift", "Calvin Harris"];
 	var appId = "social-informor";
-	var url_bands = "https://api.bandsintown.com/artists/"
-	var events = "/events.jsonp?app_id=social-informor";
-	// http://api.bandsintown.com/artists/Skrillex/events.json?app_id=YOUR_APP_ID
+	// var url_bands = "https://api.bandsintown.com/artists/"
+	// var events = "/events.jsonp?app_id=social-informor";
+	var jamBaseAPI = "zq6j5ydsaezxw8faf5fh6qvr";
+	var jamBaseURL = "https://api.jambase.com/events?";
+	var artistIdSyn = "artistId=";
+	var restOfUrl = "&page=0&api_key=zq6j5ydsaezxw8faf5fh6qvr";
+	var artistNameSyn = "artists?name=";
+	var jamBaseURLArtistID = "https://api.jambase.com/"
+	// http://api.jambase.com/events?artistId=52303&page=0&api_key=zq6j5ydsaezxw8faf5fh6qvr
+	// http://api.jambase.com/artists?name=Calvin+harris&page=0&api_key=zq6j5ydsaezxw8faf5fh6qvr
+
 
 	function getEvents(){
 		console.log("get events Button Clicked");
@@ -27,7 +35,7 @@
 	        else{
 	          artist = array[i];
 	        }
-			url2 = url_bands+artist+events;
+			url2 = jamBaseURLArtistID+artistNameSyn+artist+restOfUrl;
 			console.log(url2);
 			$.get(url2, function(data, status){
 	        	console.log("Data: " + JSON.stringify(data) + "\nStatus: " + status);
