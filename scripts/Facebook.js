@@ -23,6 +23,7 @@ var name;
 var object = [];
 var topTenArtists = [];
 var twitterHandles = [];
+var dict = { };
 
 // $(document).ready(function() {
 //   $('#queryFB4').on('click', queryFireBase);
@@ -159,11 +160,11 @@ function returnFriend(userToken, userId){
     // console.log('friends in friend function is:  ' + JSON.stringify(friends));
     console.log('data in friend function is:  ' + JSON.stringify(data));
     userFBRef.update({
-      "Friends Music": data
+      "Friends Music": response.friends.data
     });
-    var next = response.friends.paging.next;
-    getHotness(data);
-    console.log("paging.next is: " + next);
+    // var next = response.friends.paging.next;
+    getHotness(response.friends.data);
+    // console.log("paging.next is: " + next);
   //   if (next != undefined){
   //     saveMusicDataToFB(next);
   //   }
@@ -219,6 +220,15 @@ function getHotness(friendMusicArray){
         else{
           artist2 = artist;
         }
+        if ( dict.hasOwnProperty(artist2) ){
+          currCount = dict[artist2];
+          nextCount = currCount+1;
+          dict[artist2] = nextCount;
+        }
+        else {
+          dict[artist2] = 1;
+        }
+        console.log("dictIs: " + JSON.strinigify(dict));
         // console.log("artist name in getHotness is: " + artist2);
         // "https://developer.echonest.com/api/v4/artist/profile?api_key=FILDTEOIK2HBORODV&name=weezer&bucket=hotttnesss&bucket=familiarity&bucket=terms"
         // url2 = url+artistSyntax+hotness+APIpart+"&name="+artist2+"&format=json";
@@ -230,7 +240,7 @@ function getHotness(friendMusicArray){
           console.log("data get Hotness is: " + JSON.stringify(data) + "\nStatus: " + status);
           // hotnessArray1.push(data);
           try{
-            if (data.response.artist != undefined) {
+            if (typeof data.response.artist !== undefined) {
               var artistResponse = data.response.artist;
               // console.log("artistInfo is: " + JSON.stringify(artistsInfo));
               artistInfo.push(artistResponse);
@@ -256,7 +266,7 @@ function getHotness(friendMusicArray){
       }
     }
     catch(errorObject){
-      console.log("no music data for that friend" + errorObject);
+      console.log("there was en error");
     }
   }
   artistHotness.sort(function(b,a) {
@@ -267,7 +277,7 @@ function getHotness(friendMusicArray){
     artistInfo
   });
   // // https://developer.echonest.com/api/v4/artist/hotttnesss?api_key=FILDTEOIK2HBORODV&id=ARH6W4X1187B99274F&format=json
-  displayHotness(artistInfo);
+
   //get top 10 songs from artistHotness array
   // getArtistSongs(artistHotness);
   // //get twitter handles of top 10 hottest artists
@@ -284,15 +294,15 @@ function sortHotness(hotnessArray){
   });
 }
 
-function displayHotness(array){
-  console.log("display hotness function called");
-  for (i = 0; i < 10 ; i++) { 
-      var artistName = array[i].name;
-      var hotness_score = array[i].hotttnesss;
-      console.log("artist name is: " + artistName + " hotness score is: " + hotness_score);
-      $( "#hot_artists" ).append( "<li>" + artistName + ": " + "score: " +hotness_score + "</li>" );
-  }
-}
+// function displayHotness(array){
+//   console.log("display hotness function called");
+//   for (i = 0; i < 10 ; i++) { 
+//       var artistName = array[i].name;
+//       var hotness_score = array[i].hotttnesss;
+//       console.log("artist name is: " + artistName + " hotness score is: " + hotness_score);
+//       $( "#hot_artists" ).append( "<li>" + artistName + ": " + "score: " +hotness_score + "</li>" );
+//   }
+// }
 
 
 
@@ -348,7 +358,7 @@ function queryFireBase(){
           artistName = array[i].name;
           hotness_score = array[i].hotttnesss;
           song = array[i].songs[0].title; 
-          if (array[i].images[0].url != undefined) { imgURL = array[i].images[0].url; }
+          if (typeof array[i].images[0].url != undefined) { imgURL = array[i].images[0].url; }
           console.log("artist name is: " + artistName + " hotness score is: " + hotness_score + " top song: " + song);
           $( "#hot_artists" ).append( "<li><div class = 'song'>" + song + "</div>"
                                     + "<div class = 'artist'>" + artistName + ": score: " +hotness_score +"</div>"
@@ -472,7 +482,7 @@ function getArtistSongs(array){
       $.get(url2, function(data, status){
         console.log("data: " + JSON.stringify(data) + "\nStatus: " + status);
         artist_top_songs.push(data);
-        if (data.response.tracks != undefined) {
+        if (typeof data.response.tracks != undefined) {
           var artistTrack = data.response.artist;
            console.log("Top Songs for " + name + " are: " + JSON.stringify(artistsInfo));
           artist_top_songs.push(artistTrack);
