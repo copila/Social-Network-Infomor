@@ -432,13 +432,14 @@ function getEvents(){
           // formatResults(data);
         });
     }
+    displayEvents();
   }
 
 function displayEvents (){
   eventInfo.sort(function(b,a) {
     return parseFloat(a.score) - parseFloat(b.score);
     });
-  for (var x = 0; x < eventInfo.length; x++){
+  for (var x = 0; x < 10; x++){
         console.log(" artist name is: " + eventInfo[x].artist + " score is: " + eventInfo[x].score + " title: " + eventInfo[x].title + " announced_date: " + eventInfo[x].announced_date);
         $( "#events_div" ).append( "<li>" + eventInfo[x].artist+ ": " + " title: " + eventInfo[x].title + "score: " + eventInfo[x].score + " announced_date: " + eventInfo[x].announced_date + "</li>" );
   }
