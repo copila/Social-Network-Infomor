@@ -233,21 +233,21 @@ function getHotness(friendMusicArray){
         else {
           dict[artistClean] = 1;
         }
-        console.log("dictIs: " + JSON.stringify(dict));
+        // console.log("dictIs: " + JSON.stringify(dict));
         // console.log("artist name in getHotness is: " + artist2);
         // "https://developer.echonest.com/api/v4/artist/profile?api_key=FILDTEOIK2HBORODV&name=weezer&bucket=hotttnesss&bucket=familiarity&bucket=terms"
         // url2 = url+artistSyntax+hotness+APIpart+"&name="+artist2+"&format=json";
         url2 = url+artistSyntax+"profile?"+APIpart+"&name="+artist2+"&bucket=hotttnesss&bucket=images&bucket=artist_location&bucket=songs&format=json";
-        console.log("url2 is " + url2);
+        // console.log("url2 is " + url2);
         // url2 = url+artistSyntax+hotness+APIpart+"&name="+artist2+"&format=json";
         // console.log("url is: " + url2);
         $.get(url2, function(data, status){
-          console.log("data get Hotness is: " + JSON.stringify(data) + "\nStatus: " + status);
+          // console.log("data get Hotness is: " + JSON.stringify(data) + "\nStatus: " + status);
           // hotnessArray1.push(data);
           try{
             if (data.response.artist != undefined) {
               var artistResponse = data.response.artist;
-              console.log("artistInfo is: " + JSON.stringify(artistInfo));
+              // console.log("artistInfo is: " + JSON.stringify(artistInfo));
               artistInfo.push(artistResponse);
               // userFBRef.update({
               //   artistsInfo
@@ -277,7 +277,7 @@ function getHotness(friendMusicArray){
   artistHotness.sort(function(b,a) {
     return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
   });
-  console.log("out of both for loops artistInfo in getHotness is: " + artistInfo);
+  // console.log("out of both for loops artistInfo in getHotness is: " + artistInfo);
   userFBRef.update({
     artistInfo
   });
@@ -287,8 +287,8 @@ function getHotness(friendMusicArray){
   // getArtistSongs(artistHotness);
   // //get twitter handles of top 10 hottest artists
   // getTwitterHandles(artistHotness);
-  console.log("artist info length after all loops is " + artistsInfo.length);
-  console.log("dict after all loops is" + JSON.stringify(dict));
+  // console.log("artist info length after all loops is " + artistsInfo.length);
+  // console.log("dict after all loops is" + JSON.stringify(dict));
   userFBRef.update({
     dict
   });
@@ -321,10 +321,10 @@ function queryFireBase(){
       return parseFloat(a.hotttnesss) - parseFloat(b.hotttnesss);
     });            
     // console.log("object after sorting is " + snapshot);
-    console.log("object after sorting is " + object);
-    console.log(JSON.stringify(object[0]));
-    console.log(JSON.stringify(object[1]));
-    console.log("object length is " + object.length);
+    // console.log("object after sorting is " + object);
+    // console.log(JSON.stringify(object[0]));
+    // console.log(JSON.stringify(object[1]));
+    // console.log("object length is " + object.length);
     displayFireBaseResults(object);
     console.log(snapshot.val());
   }, function (errorObject) {
