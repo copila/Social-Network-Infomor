@@ -24,7 +24,7 @@ var object = [];
 var topTenArtists = [];
 var twitterHandles = [];
 var dict = { };
-var countDataObjects; 
+var counterDataObject = 0; 
 
 // $(document).ready(function() {
 //   $('#queryFB4').on('click', queryFireBase);
@@ -270,6 +270,7 @@ function getHotness(friendMusicArray){
           }
           finally {
             console.log("in finally portion");
+            console.log("data objects number " + counterDataObject);
             userFBRef.update({
               artistInfo
             });
