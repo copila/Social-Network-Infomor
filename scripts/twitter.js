@@ -2,7 +2,7 @@ var ref = new Firebase("https://social-informor.firebaseio.com");
 
 	//$('#twitterAuth').on('click', twitterAuth);
 	var APIKEY 			= "";
-	var url 			= "https://api.twitter.com/1.1/";
+	var urlTwitter 		= "https://api.twitter.com/1.1/";
 	var statusSyntax 	= "statuses/"
 	var news 			= "news?"
 	var songs 			= "songs?"
@@ -30,14 +30,14 @@ function twitterAuth() {
 function getTweets() {
 	window.alert("you tried retrieving tweets");
 
-	var url2 = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=informor&count=2";
-	getURL(url2);
+	var urlTwitterComplete = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=informor&count=2";
+	getURL(urlTwitterComplete);
 }
 
-function getURL(url2){	
-	window.alert("URL: " + url2);
+function getURL(urlTwitterComplete){	
+	window.alert("URL: " + urlTwitterComplete);
 
-	$.get(url2, function(data, status){
+	$.get(urlTwitterComplete, function(data, status){
     console.log("Data: " + JSON.stringify(data) + "\nStatus: " + status);
     formatResults(data);
 	});
