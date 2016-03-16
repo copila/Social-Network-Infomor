@@ -347,9 +347,9 @@ function queryFireBase(){
           song = array[i].songs[0].title; 
           if (typeof array[i].images[0].url != undefined) { imgURL = array[i].images[0].url; }
           console.log("artist name is: " + artistName + " hotness score is: " + hotness_score + " top song: " + song);
-          $( "#hot_artists" ).append( "<li><div class = 'song'>" + song + "</div>"
+          $( "#hot_artists" ).append( "<li><div><div class = 'song'>" + song + "</div>"
                                     + "<div class = 'artist'>" + artistName + ": score: " +hotness_score +"</div>"
-                                    + "<img src = '" + imgURL + "'></li>" );
+                                    + "<img src = '" + imgURL + "'></div></li>" );
           topTenArtists.push(array[i]);
           console.log("topTenArtists array in displayFireBaseResults is : " + topTenArtists);
         }
@@ -361,7 +361,9 @@ function queryFireBase(){
         hotness_score = array[i].hotttnesss;
         song = array[i].songs[0].title;
         console.log("artist name is: " + artistName + " hotness score is: " + hotness_score + " top song: " + song);
-        $( "#hot_artists" ).append( "<li><div class = 'song'>"+song+"</div><div class = 'artist'>" + artistName + ": score: " +hotness_score +"</div>"+imgURL+"</li>" );
+        $( "#hot_artists" ).append( "<li><div><div class = 'song'>" + song + "</div>"
+                                    + "<div class = 'artist'>" + artistName + ": score: " +hotness_score +"</div>"
+                                    + "<img src = '" + imgURL + "'></div></li>" );
       }
       i += 1;
     }
