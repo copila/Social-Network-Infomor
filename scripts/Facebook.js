@@ -431,24 +431,39 @@ function getEvents(){
           // formatResults(data);
         });
     }
-    displayEvents();
   }
 
 function displayEvents (){
   console.log("display events Button Clicked, topTenArtist length is" + eventInfo.length );
   window.alert("display events Button Clicked");
   console.log("eventINfo is: " + JSON.stringify(eventInfo));
-
-
   eventInfo.sort(function(b,a) {
     return parseFloat(a.score) - parseFloat(b.score);
-    });
-  console.log("eventINfo is: " + JSON.stringify(eventInfo));
-  for (var x = 0; x < 10; x++){
-        console.log(" artist name is: " + eventInfo[x].artist + " score is: " + eventInfo[x].score + " title: " + eventInfo[x].title + " announced_date: " + eventInfo[x].announced_date);
-        $( "#events_div" ).append( "<li>" + eventInfo[x].artist+ ": " + " title: " + eventInfo[x].title + "score: " + eventInfo[x].score + " announced_date: " + eventInfo[x].announced_date + "</li>" );
-  }
+  });
+  var numOfResults = 10;
+    var tracker = 0;
+    var title = '';
+    $( "#events_div" ).empty();
+    i = 0;
+    while (tracker < 10){
+      if (i > 0) {
+        if (eventInfo[i].title === eventInfo[i-1].title){
+          console.log("duplicate value");
+        }
+        else {
+          tracker +=1;
+          console.log("title is: "  + eventInfo[i].title + "--  Popularity is:  " + eventInfo[i].score  + "--  Announced Date: " + eventInfo[i].announced_date);
+          $( "#events_div" ).append( "<li>" + eventInfo[i].title + "--  Popularity is:  " + eventInfo[i].score  + "--  Announced Date: " + eventInfo[i].announced_date + "</li>" );
+        }
+      }
+      else {
+        tracker +=1;
+        console.log("title  is: " + eventInfo[i].title + "---  Popularity is:  " + eventInfo[i].score  + "--  Announced Date: " + eventInfo[i].announced_date);
+        $( "#events_div" ).append( "<li>" + eventInfo[i].title + "--  Popularity is:  " + eventInfo[i].score  + "-- Announced Date: " + eventInfo[i].announced_date  + "</li>" );
 
+      }
+      i+=1;
+    }
 }
 
   // function getTwitterHandles() {
