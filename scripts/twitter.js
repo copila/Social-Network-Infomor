@@ -28,13 +28,13 @@ function twitterAuth() {
 }
 
 function getTweets() {
-	url2 = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=informor&count=2";
+	window.alert("you tried retrieving tweets");
+	
+	var url2 = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=informor&count=2";
 	getURL(url2);
 }
 
-function getURL(url2){
-
-	window.alert("you tried retrieving tweets");	
+function getURL(url2){	
 
 	$.get(url2, function(data, status){
     console.log("Data: " + JSON.stringify(data) + "\nStatus: " + status);
