@@ -24,6 +24,12 @@
 	// http://api.jambase.com/events?artistId=52303&page=0&api_key=zq6j5ydsaezxw8faf5fh6qvr
 	// http://api.jambase.com/artists?name=Calvin+harris&page=0&api_key=zq6j5ydsaezxw8faf5fh6qvr
 	var gigAPIKey = "b3458f6944d5c8d8ec7e6a01348345ca";
+	var restOfSGUrl = "&client_id=NDM1ODIxMnwxNDU4MTA3MDY3&client_secret=dE4BXwM7ph1gl22YPPm2IQJqDOmr4c5qes0Cv-Lt"
+	var seatgeekURL = "https://api.seatgeek.com/2/events?performers.slug="
+// 	'https://api.seatgeek.com/2/events?performers.slug=new-york-mets'
+// 	ID: "NDM1ODIxMnwxNDU4MTA3MDY3"
+// Secret: "dE4BXwM7ph1gl22YPPm2IQJqDOmr4c5qes0Cv-Lt"
+// https://api.seatgeek.com/2/events?performers.slug=coldplay&client_id=NDM1ODIxMnwxNDU4MTA3MDY3&client_secret=dE4BXwM7ph1gl22YPPm2IQJqDOmr4c5qes0Cv-Lt
 
 
 
@@ -37,7 +43,7 @@
 	        else{
 	          artist = array[i];
 	        }
-			url2 = jamBaseURLArtistID+artistNameSyn+artist+restOfUrl;
+			url2 = seatgeekURL+artist+restOfSGUrl;
 			console.log(url2);
 			$.get(url2, function(data, status){
 	        	console.log("Data: " + JSON.stringify(data) + "\nStatus: " + status);
