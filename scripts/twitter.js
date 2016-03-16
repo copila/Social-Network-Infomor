@@ -34,6 +34,8 @@ function getTweets() {
 
 function getURL(url2){
 
+	window.alert("you tried retrieving tweets");	
+
 	$.get(url2, function(data, status){
     console.log("Data: " + JSON.stringify(data) + "\nStatus: " + status);
     formatResults(data);
