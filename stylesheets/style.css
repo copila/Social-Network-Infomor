@@ -1,10 +1,10 @@
 body {
 /*	background: black; */
-	color: 			#fff;
+	color: 			#eeffff;
 /*	color: 			#34495e;*/
 	/*background: #DCDCDC;*/
 	background: 	#ffffff;
-	background: 	url('images/hero.jpg') no-repeat center center;
+	background: 	url('../images/top10ist_Hero.jpg') no-repeat center center;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
