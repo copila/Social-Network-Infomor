@@ -1,7 +1,7 @@
 // $('#twitterAuth').on('click', authTwitter);
 
-var cb = new Codebird;
-cb.setConsumerKey("myMJ6eT51X95q7ksmPrHfS5tI", "Ldp8SM2SVQ6lx4AP6qGL8QAYYct3DXGGgubhIGkYbfp1Z6NJBB");
+// var cb = new Codebird;
+// cb.setConsumerKey("myMJ6eT51X95q7ksmPrHfS5tI", "Ldp8SM2SVQ6lx4AP6qGL8QAYYct3DXGGgubhIGkYbfp1Z6NJBB");
 
 var twitterToken = "";
 var twitterSecret = "";

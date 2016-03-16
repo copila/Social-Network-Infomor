@@ -304,9 +304,12 @@ function sortHotness(hotnessArray){
   });
 }
 
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> 3d424993fa69cb97c8f23f2ec6fcc6edd83e011d
 
 
 // $(document).on("click", "#hot_artists", function (){
