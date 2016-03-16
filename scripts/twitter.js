@@ -5,11 +5,11 @@ var ref = new Firebase("https://social-informor.firebaseio.com");
 	var statusSyntax 	= "statuses/"
 	var usernameSyntax 	= "user_timeline.json?screen_name="
 	var countSyntax		= "&count=5"
-	var results 		= "4";
-	var start 			= "0"
-	var artist;
-	var object = [];
-	var topTenArtists = [];
+	// var results 		= "4";
+	// var start 			= "0"
+	// var artist;	
+	// var object = [];
+	// var topTenArtists = [];
 
 
 function twitterAuth() {
