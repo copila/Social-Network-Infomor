@@ -26,11 +26,12 @@
 	var gigAPIKey = "b3458f6944d5c8d8ec7e6a01348345ca";
 	var restOfSGUrl = "&client_id=NDM1ODIxMnwxNDU4MTA3MDY3&client_secret=dE4BXwM7ph1gl22YPPm2IQJqDOmr4c5qes0Cv-Lt"
 	var seatgeekURL = "https://api.seatgeek.com/2/events?performers.slug="
+	var eventInfo = [];
 // 	'https://api.seatgeek.com/2/events?performers.slug=new-york-mets'
 // 	ID: "NDM1ODIxMnwxNDU4MTA3MDY3"
 // Secret: "dE4BXwM7ph1gl22YPPm2IQJqDOmr4c5qes0Cv-Lt"
 // https://api.seatgeek.com/2/events?performers.slug=coldplay&client_id=NDM1ODIxMnwxNDU4MTA3MDY3&client_secret=dE4BXwM7ph1gl22YPPm2IQJqDOmr4c5qes0Cv-Lt
-
+// https://api.seatgeek.com/2/events?performers.slug=Coldplay&client_id=NDM1ODIxMnwxNDU4MTA3MDY3&client_secret=dE4BXwM7ph1gl22YPPm2IQJqDOmr4c5qes0Cv-Lt
 
 
 	function getEvents(){
@@ -38,15 +39,43 @@
     	window.alert("get events Button Clicked");
 		for (var i = 0; i < array.length; i++) {
 			if (hasWhiteSpace(array[i])=== true) {
-				artist = array[i].split(' ').join('%20');
+				artist = array[i].split(' ').join('-');
+				artist = artist.toLowerCase();
 	        }
 	        else{
 	          artist = array[i];
+	          artist = artist.toLowerCase();
 	        }
 			url2 = seatgeekURL+artist+restOfSGUrl;
 			console.log(url2);
 			$.get(url2, function(data, status){
-	        	console.log("Data: " + JSON.stringify(data) + "\nStatus: " + status);
+	        	// console.log("Data: " + JSON.stringify(data) + "\nStatus: " + status);
+	        	var events = data.events;
+	        	for (var x = 0; x < events.length; x++){
+
+	        		try{
+	        			var title = data.events[x].title;
+	        			var announce_date = data.events[x].announce_date;
+	        			var score = data.events[x].score;
+	        			var location = data.events[x].location;
+	        			var object = { artist: artist, title:title, announced_date: announce_date, score:score, location:location };
+	        			console.log("object is: " + JSON.stringify(object));
+	        			eventInfo.push(object);
+	        			console.log(eventInfo.length);
+
+	        		}
+	        		catch(error){
+	        			console.log("caught an error");
+
+	        		}
+	        		finally{
+	        			console.log("in the finall section");
+
+	        		}
+	        	}
+	        	
+	        	console.log("first evnet is " + title + " announced on: " + announce_date + " scored at " + score);
+
 	        // formatResults(data);
 	    	});
 		}
@@ -56,8 +85,19 @@
 	  return s.indexOf(' ') >= 0;
 	}
 
+function displayEvents(){
+	eventInfo.sort(function(b,a) {
+    return parseFloat(a.score) - parseFloat(b.score);
+  	});
+	for (var x = 0; x < eventInfo.length; x++){
+      	console.log("artist name is: " + eventInfo[x].artist + " score is: " + eventInfo[x].score);
+      	$( "#artist_ events" ).append( "<li>" + eventInfo[x].artist+ ": " + "title: " + eventInfo[x].title + "score: " + eventInfo[x].score + " announced_date: " + eventInfo[x].announced_date + "</li>" );
+	}
+}
+
 window.onload = function () {
   document.getElementById("events").onclick = getEvents;
+  document.getElementById("d").onclick = displayEvents;
 
   // function displayHotness(array){
 //   console.log("display hotness function called");
