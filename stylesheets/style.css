@@ -24,7 +24,7 @@ a, a:visited {
 
 
 #logo {
-	top: 			20px;
+	bottom: 		20px;
 	left:  			10px;
 	text-align: 	left;
 	float:  		left;
@@ -108,8 +108,9 @@ li .artist {
 }
 
 li img {
-	float:  			left;
+	float:  			right;
 	max-height:  		80px;
-	margin-top: 		15px;
+	vertical-align:  	top;
+	/*margin-top: 		15px;*/
 
 }
