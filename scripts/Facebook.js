@@ -276,7 +276,6 @@ function getHotness(friendMusicArray){
     artistInfo
   });
   // // https://developer.echonest.com/api/v4/artist/hotttnesss?api_key=FILDTEOIK2HBORODV&id=ARH6W4X1187B99274F&format=json
-  displayHotness(artistInfo);
   //get top 10 songs from artistHotness array
   // getArtistSongs(artistHotness);
   // //get twitter handles of top 10 hottest artists
@@ -411,7 +410,7 @@ function getEvents(){
                 var announce_date = data.events[x].announce_date;
                 var score = data.events[x].score;
                 var location = data.events[x].location;
-                var object = { artist: artist, title:title, announced_date: announce_date, score:score, location:location };
+                var object = { "artist": artist, "title":title, "announced_date": announce_date, "score":score, "location":location };
                 console.log("object is: " + JSON.stringify(object));
                 eventInfo.push(object);
                 console.log(eventInfo.length);
@@ -436,9 +435,15 @@ function getEvents(){
   }
 
 function displayEvents (){
+  console.log("display events Button Clicked, topTenArtist length is" + eventInfo.length );
+  window.alert("display events Button Clicked");
+  console.log("eventINfo is: " + JSON.stringify(eventInfo));
+
+
   eventInfo.sort(function(b,a) {
     return parseFloat(a.score) - parseFloat(b.score);
     });
+  console.log("eventINfo is: " + JSON.stringify(eventInfo));
   for (var x = 0; x < 10; x++){
         console.log(" artist name is: " + eventInfo[x].artist + " score is: " + eventInfo[x].score + " title: " + eventInfo[x].title + " announced_date: " + eventInfo[x].announced_date);
         $( "#events_div" ).append( "<li>" + eventInfo[x].artist+ ": " + " title: " + eventInfo[x].title + "score: " + eventInfo[x].score + " announced_date: " + eventInfo[x].announced_date + "</li>" );
@@ -468,14 +473,11 @@ function displayEvents (){
   //   console.log("twitterHandled data is " + twitterHandles);
   // }
 
-function returnTweets(){
-  var twitter_url = "https://api.twitter.com/1.1/search/tweets.json?q=from%3AZedd&src=typd"
-}
-
 
 window.onload = function () {
   document.getElementById("queryFB4").onclick = queryFireBase;
-  document.getElementById("display_events").onclick = getEvents;
+  document.getElementById("get_events").onclick = getEvents;
+  document.getElementById("display_events").onclick = displayEvents;
   // document.getElementById("get_twitter_handles").onclick = getTwitterHandles;
 };
 
