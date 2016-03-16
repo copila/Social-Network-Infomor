@@ -1,10 +1,10 @@
 body {
 /*	background: black; */
-	color: 			#eeffff;
+	color: 			#ffffff;
 /*	color: 			#34495e;*/
 	/*background: #DCDCDC;*/
-	background: 	#ffffff;
-	background: 	url('../images/top10ist_Hero.jpg') no-repeat center center;
+	background: 	#502C7B;
+	background: 	url('../img/top10ist_Hero.png') no-repeat center center;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -17,26 +17,37 @@ body {
 	width: 			80%;
 }
 
-.logo {
-	top: 			5%;
-	left:  			5%;
+a, a:visited {
+	color:   		#ffffff;
+}
+
+
+
+#logo {
+	top: 			20px;
+	left:  			10px;
+	text-align: 	left;
+	float:  		left;
+	z-index:  		-1;
 }
 
 header {
 	line-height: 	50%;
 	margin-top: 	15%;
 	margin-bottom: 	5%;
+	width:  		100%
+	text-align:  	center;
 }
 
-h1 {
-	font-size: 		42pt;
+h1, h3, h4 {
 	font-family: 	"fatfrank",sans-serif;
 	text-shadow: 	8px 8px 0px rgba(0,0,0,0.50);
+	line-height: 	42pt;
 }
 
-h1 #L1 { font-size: 142%; }
-h1 #L1 { font-size: 100%; }
-h1 #L3 { font-size:  93%; }
+#L1 { font-size: 71pt; }
+#L2 { font-size: 50pt; }
+#L3 { font-size: 46pt; }
 
 .btn {
 	font-size: 		18px;
