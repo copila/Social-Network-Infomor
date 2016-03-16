@@ -216,6 +216,7 @@ function getHotness(friendMusicArray){
       for (x = 0; x < friendMusicArray[i].music.data.length; x++) { 
         console.log("in inner for loop for get hotness");
         var artist = friendMusicArray[i].music.data[x].name;
+        var artistClean = friendMusicArray[i].music.data[x].name;
         // console.log("artist in nested for loop is: " + artist)
         if (hasWhiteSpace(artist) === true ){
           // console.log("artist has whitespace " + artist);
@@ -224,13 +225,13 @@ function getHotness(friendMusicArray){
         else{
           artist2 = artist;
         }
-        if ( dict.hasOwnProperty(artist2) ){
-          currCount = dict[artist2];
+        if ( dict.hasOwnProperty(artistClean) ){
+          currCount = dict[artistClean];
           nextCount = currCount+1;
-          dict[artist2] = nextCount;
+          dict[artistClean] = nextCount;
         }
         else {
-          dict[artist2] = 1;
+          dict[artistClean] = 1;
         }
         console.log("dictIs: " + JSON.stringify(dict));
         // console.log("artist name in getHotness is: " + artist2);
@@ -304,18 +305,8 @@ function sortHotness(hotnessArray){
   });
 }
 
-<<<<<<< HEAD
 
 
-
-=======
->>>>>>> 3d424993fa69cb97c8f23f2ec6fcc6edd83e011d
-
-
-// $(document).on("click", "#hot_artists", function (){
-//   console.log("hot artists button clicked");
-//   window.alert("you queried firebase");
-// });
 
 function queryFireBase(){
   console.log("queryFireBase called!");
@@ -380,10 +371,17 @@ function queryFireBase(){
         tracker +=1;
         topTenArtists.push(array[i]);
         artistName = array[i].name;
+        if ( dict.hasOwnProperty(artistName) ){
+            count = dict[artistName];
+          }
+        else {
+            count  =  "no";
+        } 
         hotness_score = array[i].hotttnesss;
         song = array[i].songs[0].title;
+        if (array[i].images[0].url != undefined) { imgURL = array[i].images[0].url; }
         console.log("artist name is: " + artistName + " hotness score is: " + hotness_score + " top song: " + song);
-        $( "#hot_artists" ).append( "<li><div class = 'song'>"+song+"</div><div class = 'artist'>" + artistName + ": score: " +hotness_score +"</div>"+imgURL+"</li>" );
+        $( "#hot_artists" ).append( "<li><div class = 'song'>"+song+"</div><div class = 'artist'>" + artistName + ": score: " +hotness_score + " : you have " +  count + " friends listening" +"</div>"+imgURL+"</li>" );
       }
       i += 1;
     }
