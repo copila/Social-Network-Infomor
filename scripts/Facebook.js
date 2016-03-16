@@ -114,15 +114,6 @@ FB.getLoginStatus(function(response) {
 
 };
 
-// // Load the SDK asynchronously
-// (function(d, s, id) {
-//   var js, fjs = d.getElementsByTagName(s)[0];
-//   if (d.getElementById(id)) return;
-//   js = d.createElement(s); js.id = id;
-//   js.src = "//connect.facebook.net/en_US/sdk.js";
-//   fjs.parentNode.insertBefore(js, fjs);
-// }(document, 'script', 'facebook-jssdk'));
-
 // Here we run a very simple test of the Graph API after login is
 // successful.  See statusChangeCallback() for when this call is made.
 function testAPI() {
@@ -432,57 +423,6 @@ window.onload = function () {
 };
 
 
-
-
-
-
-
-
-
-
-// function getArtistSongs(array){
-//   //return top 10 songs, 1 of each artist in array
-//   //query using artist id
-
-//   // for (i = 0; i < 10 ; i++) { 
-//   //     var name = array[i].name;
-//   //     var hotness_score = array[i].hotttnesss;
-//   //     var artist_id = array[i].id;
-//   // //     console.log("artist name is: " + name + " hotness score is: " + hotness_score);
-//   // //     $( "#hot_artists" ).append( "<li>" + name + ": " + "score: " +hotness_score + "</li>" );
-//   // }
-
-//   var songs = [];
-//   for (i = 0; i < 10 ; i++) { 
-//       var name = array[i].name;
-//       var hotness_score = array[i].hotttnesss;
-//       var artist_id = array[i].id;
-
-//       var artist_top_songs = [];
-
-//       echonest.artist(name).images( function(imageCollection) {
-//           $('body').prepend( imageCollection.to_html('<img src="${url}">') );
-//       });
-
-//       url2 = urlSpotify + "/v1/artists/" + artist_id + "/top-tracks" + "?country=US";
-//       console.log("url is: " + url2);
-//       $.get(url2, function(data, status){
-//         console.log("data: " + JSON.stringify(data) + "\nStatus: " + status);
-//         artist_top_songs.push(data);
-//         if (data.response.tracks != undefined) {
-//           var artistTrack = data.response.artist;
-//           console.log("Top Songs for " + name + " are: " + JSON.stringify(artistsInfo));
-//           artist_top_songs.push(artistTrack);
-//         }
-//         else {
-//           console.log("NOOO response for this artist: ");
-//         }      
-//       });
-//   //     console.log("artist name is: " + name + " hotness score is: " + hotness_score);
-//   //     $( "#hot_artists" ).append( "<li>" + name + ": " + "score: " +hotness_score + "</li>" );
-//   }
-// }
-
 function getArtistSongs(array){
   var songs = [];
   for (i = 0; i < 10 ; i++) { 
@@ -518,39 +458,3 @@ function getArtistSongs(array){
   //     $( "#hot_artists" ).append( "<li>" + name + ": " + "score: " +hotness_score + "</li>" );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function saveMusicDataToFB(nextPage){
-//   var friendsFBRef = new Firebase("https://social-informor.firebaseio.com/Friends");
-//   if (nextPage != undefined){
-//     FB.api(nextPage, 'get', function(response) {
-//       console.log("next page response: " + JSON.stringify(response));
-//       var next = response.paging.next;
-//       var previous = response.paging.previous;
-//       console.log("paging next is: " + next);
-//       console.log("paging previous is: " + next);
-//       var friendData = response.data;
-//       console.log ("friendData is: " + friendData);
-//     });
-//     friendsFBRef.update({
-//       friendData
-//     });
-//     if (next != undefined){
-//       saveMusicDataToFB(next);
-//     }
-//   }
-// }
-// });
-
-

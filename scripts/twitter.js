@@ -21,6 +21,7 @@ function twitterAuth() {
 		    window.alert("Login Failed!", error);
 		} else {
 		    window.alert("Authenticated successfully with payload:", authData);
+		    console.log("Authenticated successfully with payload:", authData);
 		}
 	});
 }
