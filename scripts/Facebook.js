@@ -160,10 +160,11 @@ function returnFriend(userToken, userId){
     // console.log('friends in friend function is:  ' + JSON.stringify(friends));
     console.log('data in friend function is:  ' + JSON.stringify(data));
     userFBRef.update({
-      "Friends Music": response.friends.data
+      "Friends Music": data
     });
     // var next = response.friends.paging.next;
-    getHotness(response.friends.data);
+    console.log("about to call get hotness");
+    getHotness(data);
     // console.log("paging.next is: " + next);
   //   if (next != undefined){
   //     saveMusicDataToFB(next);
@@ -203,14 +204,17 @@ function returnMusic(userToken, userId){
 
 
 function getHotness(friendMusicArray){
+  console.log("get hotness called")
   // console.log("gethotness called, friendMusic array is:  " + friendMusicArray);
   var userFBRef = new Firebase("https://social-informor.firebaseio.com/"+name);
   for (i = 0; i < friendMusicArray.length; i++) {
     // console.log("friendMusicArray," + "for index " + i + "is: " + JSON.stringify(friendMusicArray[i]));
     // var friendsArtist =friendMusicArray[i].music.data[0].name;
     // console.log("friendsArtist in get hotness is" + friendsArtist);
+    console.log("in outer for loop of get hotness");
     try{
       for (x = 0; x < friendMusicArray[i].music.data.length; x++) { 
+        console.log("in inner for loop for get hotness");
         var artist = friendMusicArray[i].music.data[x].name;
         // console.log("artist in nested for loop is: " + artist)
         if (hasWhiteSpace(artist) === true ){
@@ -228,7 +232,7 @@ function getHotness(friendMusicArray){
         else {
           dict[artist2] = 1;
         }
-        console.log("dictIs: " + JSON.strinigify(dict));
+        console.log("dictIs: " + JSON.stringify(dict));
         // console.log("artist name in getHotness is: " + artist2);
         // "https://developer.echonest.com/api/v4/artist/profile?api_key=FILDTEOIK2HBORODV&name=weezer&bucket=hotttnesss&bucket=familiarity&bucket=terms"
         // url2 = url+artistSyntax+hotness+APIpart+"&name="+artist2+"&format=json";
@@ -240,9 +244,9 @@ function getHotness(friendMusicArray){
           console.log("data get Hotness is: " + JSON.stringify(data) + "\nStatus: " + status);
           // hotnessArray1.push(data);
           try{
-            if (typeof data.response.artist !== undefined) {
+            if (data.response.artist != undefined) {
               var artistResponse = data.response.artist;
-              // console.log("artistInfo is: " + JSON.stringify(artistsInfo));
+              console.log("artistInfo is: " + JSON.stringify(artistInfo));
               artistInfo.push(artistResponse);
               // userFBRef.update({
               //   artistsInfo
@@ -253,7 +257,7 @@ function getHotness(friendMusicArray){
             }
           }
           catch (error){
-            console.log(stringify(error));
+            console.log("error thrown");
           }
           finally {
             console.log("in finally portion");
@@ -282,6 +286,12 @@ function getHotness(friendMusicArray){
   // getArtistSongs(artistHotness);
   // //get twitter handles of top 10 hottest artists
   // getTwitterHandles(artistHotness);
+  console.log("artist info length after all loops is " + artistsInfo.length);
+  console.log("dict after all loops is" + JSON.stringify(dict));
+  userFBRef.update({
+    dict
+  });
+
 }
 
 function hasWhiteSpace(s) {
@@ -293,16 +303,6 @@ function sortHotness(hotnessArray){
     return parseFloat(b.hotttnesss) - parseFloat(a.hotttnesss);
   });
 }
-
-// function displayHotness(array){
-//   console.log("display hotness function called");
-//   for (i = 0; i < 10 ; i++) { 
-//       var artistName = array[i].name;
-//       var hotness_score = array[i].hotttnesss;
-//       console.log("artist name is: " + artistName + " hotness score is: " + hotness_score);
-//       $( "#hot_artists" ).append( "<li>" + artistName + ": " + "score: " +hotness_score + "</li>" );
-//   }
-// }
 
 
 
@@ -356,12 +356,18 @@ function queryFireBase(){
         else {
           tracker +=1;
           artistName = array[i].name;
+          if ( dict.hasOwnProperty(artistName) ){
+            count = dict[artistName];
+          }
+          else {
+            count  =  "no";
+          } 
           hotness_score = array[i].hotttnesss;
           song = array[i].songs[0].title; 
-          if (typeof array[i].images[0].url != undefined) { imgURL = array[i].images[0].url; }
+          if (array[i].images[0].url != undefined) { imgURL = array[i].images[0].url; }
           console.log("artist name is: " + artistName + " hotness score is: " + hotness_score + " top song: " + song);
           $( "#hot_artists" ).append( "<li><div class = 'song'>" + song + "</div>"
-                                    + "<div class = 'artist'>" + artistName + ": score: " +hotness_score +"</div>"
+                                    + "<div class = 'artist'>" + artistName + ": score: " +hotness_score + " : you have " +  count + " friends listening" +"</div>"
                                     + "<img src = '" + imgURL + "'></li>" );
           topTenArtists.push(array[i]);
           console.log("topTenArtists array in displayFireBaseResults is : " + topTenArtists);
@@ -482,7 +488,7 @@ function getArtistSongs(array){
       $.get(url2, function(data, status){
         console.log("data: " + JSON.stringify(data) + "\nStatus: " + status);
         artist_top_songs.push(data);
-        if (typeof data.response.tracks != undefined) {
+        if (data.response.tracks != undefined) {
           var artistTrack = data.response.artist;
            console.log("Top Songs for " + name + " are: " + JSON.stringify(artistsInfo));
           artist_top_songs.push(artistTrack);
