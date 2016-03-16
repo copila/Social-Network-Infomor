@@ -387,16 +387,16 @@ function queryFireBase(){
   }
 
 
-function getEvents(topTenArtists){
+function getEvents(){
     console.log("get events Button Clicked, topTenArtist length is" + topTenArtists.length );
     window.alert("get events Button Clicked");
-    for (var i = 0; i < topTenArtists.length; i++) {
-      if (hasWhiteSpace(topTenArtists[i])=== true) {
-        artist = topTenArtists[i].split(' ').join('-');
+    for (var i = 0; i < 10; i++) {
+      if (hasWhiteSpace(object[i].name)=== true) {
+        artist = object[i].name.split(' ').join('-');
         artist = artist.toLowerCase();
           }
           else{
-            artist = array[i];
+            artist = object[i].name;
             artist = artist.toLowerCase();
           }
       url3 = seatgeekURL+artist+restOfSGUrl;
