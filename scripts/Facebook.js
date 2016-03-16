@@ -209,10 +209,21 @@ function getHotness(friendMusicArray){
     try{
       for (x = 0; x < friendMusicArray[i].music.data.length; x++) { 
         var artist = friendMusicArray[i].music.data[x].name;
+        var cleanedArtist = friendMusicArray[i].music.data[x].name;
+        if ( dict.hasOwnProperty(cleanedArtist) ){
+            count = dict[cleanedArtist];
+            countNew = count +1;
+            dict[cleanedArtist] = countNew;
+          }
+        else {
+            dict[cleanedArtist] = 1;
+        } 
+        console.log("dict is : " + JSON.stringify(dict));
         // console.log("artist in nested for loop is: " + artist)
         if (hasWhiteSpace(artist) === true ){
           // console.log("artist has whitespace " + artist);
           artist2 = artist.split(' ').join('+');
+          
         }
         else{
           artist2 = artist;
@@ -337,15 +348,17 @@ function queryFireBase(){
             count  =  "no";
           } 
           hotness_score = array[i].hotttnesss;
-          song = array[i].songs[0].title; 
+          if ( array[i].songs[0].title != undefined){
+            song = array[i].songs[0].title;
+          } 
           if (array[i].images[0].url != undefined) { imgURL = array[i].images[0].url; }
           console.log("artist name is: " + artistName + " hotness score is: " + hotness_score + " top song: " + song);
           $( "#hot_artists" ).append( "<li><div><div class = 'song'>" + song + "</div>"
-                                    + "<div class = 'artist'>" + artistName + ": score: " +hotness_score +"</div>"
+                                    + "<div class = 'artist'>" + artistName + ": score: " +hotness_score + " listened by " + count + " friends"+"</div>"
                                     + "<img src = '" + imgURL + "'></div></li>" );
 
           topTenArtists.push(array[i]);
-          console.log("topTenArtists array in displayFireBaseResults is : " + topTenArtists);
+          console.log("topTenArtists array in displayFireBaseResults is : " + topTenArtists.l);
         }
       }
       else {
@@ -359,25 +372,27 @@ function queryFireBase(){
             count  =  "no";
         } 
         hotness_score = array[i].hotttnesss;
-        song = array[i].songs[0].title;
+        if ( array[i].songs[0].title != undefined){
+          song = array[i].songs[0].title;
+        }
         if (array[i].images[0].url != undefined) { imgURL = array[i].images[0].url; }
         console.log("artist name is: " + artistName + " hotness score is: " + hotness_score + " top song: " + song);
         $( "#hot_artists" ).append( "<li><div><div class = 'song'>" + song + "</div>"
-                                    + "<div class = 'artist'>" + artistName + ": score: " +hotness_score +"</div>"
+                                    + "<div class = 'artist'>" + artistName + ": score: " +hotness_score + " listened by " + count + " friends"+ "</div>"
                                     + "<img src = '" + imgURL + "'></div></li>" );
       }
       i += 1;
     }
-    getEvents(topTenArtists);
+    // getEvents(topTenArtists);
   }
 
 
-function getEvents(array){
-    console.log("get events Button Clicked");
-      window.alert("get events Button Clicked");
-    for (var i = 0; i < array.length; i++) {
-      if (hasWhiteSpace(array[i])=== true) {
-        artist = array[i].split(' ').join('-');
+function getEvents(topTenArtists){
+    console.log("get events Button Clicked, topTenArtist length is" + topTenArtists.length );
+    window.alert("get events Button Clicked");
+    for (var i = 0; i < topTenArtists.length; i++) {
+      if (hasWhiteSpace(topTenArtists[i])=== true) {
+        artist = topTenArtists[i].split(' ').join('-');
         artist = artist.toLowerCase();
           }
           else{
@@ -459,7 +474,7 @@ function returnTweets(){
 
 window.onload = function () {
   document.getElementById("queryFB4").onclick = queryFireBase;
-  document.getElementById("display_events").onclick = displayEvents;
+  document.getElementById("display_events").onclick = getEvents;
   // document.getElementById("get_twitter_handles").onclick = getTwitterHandles;
 };
 
