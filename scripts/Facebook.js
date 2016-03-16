@@ -294,19 +294,6 @@ function sortHotness(hotnessArray){
   });
 }
 
-// function displayHotness(array){
-//   console.log("display hotness function called");
-//   for (i = 0; i < 10 ; i++) { 
-//       var artistName = array[i].name;
-//       var hotness_score = array[i].hotttnesss;
-//       console.log("artist name is: " + artistName + " hotness score is: " + hotness_score);
-//       $( "#hot_artists" ).append( "<li>" + artistName + ": " + "score: " +hotness_score + "</li>" );
-//   }
-// }
-
-
-
-
 
 
 // $(document).on("click", "#hot_artists", function (){
