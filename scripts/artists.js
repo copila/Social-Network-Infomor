@@ -16,10 +16,11 @@
 	// var url_bands = "https://api.bandsintown.com/artists/"
 	// var events = "/events.jsonp?app_id=social-informor";
 	var jamBaseAPI = "zq6j5ydsaezxw8faf5fh6qvr";
-	var jamBaseURL = "http://api.jambase.com/events?";
+	var jamBaseURL = "https://api.jambase.com/events?";
 	var artistIdSyn = "artistId=";
 	var restOfUrl = "&page=0&api_key=zq6j5ydsaezxw8faf5fh6qvr";
 	var artistNameSyn = "artists?name=";
+	var jamBaseURLArtistID = "https://api.jambase.com/"
 	// http://api.jambase.com/events?artistId=52303&page=0&api_key=zq6j5ydsaezxw8faf5fh6qvr
 	// http://api.jambase.com/artists?name=Calvin+harris&page=0&api_key=zq6j5ydsaezxw8faf5fh6qvr
 
@@ -34,7 +35,7 @@
 	        else{
 	          artist = array[i];
 	        }
-			url2 = jamBaseURL+artistNameSyn+artist+restOfUrl;
+			url2 = jamBaseURLArtistID+artistNameSyn+artist+restOfUrl;
 			console.log(url2);
 			$.get(url2, function(data, status){
 	        	console.log("Data: " + JSON.stringify(data) + "\nStatus: " + status);
