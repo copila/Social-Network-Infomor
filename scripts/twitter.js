@@ -1,12 +1,10 @@
 var ref = new Firebase("https://social-informor.firebaseio.com");
 
 	//$('#twitterAuth').on('click', twitterAuth);
-	var APIKEY 			= "";
 	var urlTwitter 		= "https://api.twitter.com/1.1/";
 	var statusSyntax 	= "statuses/"
-	var news 			= "news?"
-	var songs 			= "songs?"
-	var APIpart 		= "api_key="+APIKEY;
+	var usernameSyntax 	= "user_timeline.json?screen_name="
+	var countSyntax		= "&count=5"
 	var results 		= "4";
 	var start 			= "0"
 	var artist;
