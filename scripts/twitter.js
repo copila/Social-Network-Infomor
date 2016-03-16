@@ -1,11 +1,20 @@
 var ref = new Firebase("https://social-informor.firebaseio.com");
 
-$('#get_twitter_handles').on('click', ref.authWithOAuthPopup);
+	//$('#twitterAuth').on('click', twitterAuth);
 
-ref.authWithOAuthPopup("twitter", function(error, authData) {
-  if (error) {
-    console.log("Login Failed!", error);
-  } else {
-    console.log("Authenticated successfully with payload:", authData);
-  }
-});
+function twitterAuth() {
+
+	window.alert("you tried signing in to twitter");
+
+	ref.authWithOAuthPopup("twitter", function(error, authData) {
+		if (error) {
+		    console.log("Login Failed!", error);
+		} else {
+		    console.log("Authenticated successfully with payload:", authData);
+		}
+	});
+}
+
+window.onload = function () {
+  document.getElementById("twitterAuth").onclick = twitterAuth;
+};
